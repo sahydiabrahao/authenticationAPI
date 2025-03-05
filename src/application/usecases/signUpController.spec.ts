@@ -40,4 +40,18 @@ describe('SignUpController', () => {
       statusCode: 400,
     });
   });
+  test('Should return 400 if no passwordConfirmation is provided', () => {
+    const { sut } = makeSut();
+
+    const httpRequest = {
+      body: {
+        email: 'anyEmail@mail.com',
+        password: 'anyPassword',
+      },
+    };
+    const httpResponse = sut.handle(httpRequest);
+    expect(httpResponse).toEqual({
+      statusCode: 400,
+    });
+  });
 });
