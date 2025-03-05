@@ -6,11 +6,9 @@
     "outDir": "./dist",
     "allowJs": true,
     "checkJs": false,
-    "baseUrl": "./",
+    "baseUrl": ".",
     "paths": {
-      "@domain": ["src/domain"],
-      "@application": ["src/application"],
-      "@infra": ["src/infra"]
+      "@/*": ["src/*"]
     },
     "esModuleInterop": true,
     "skipLibCheck": true,
