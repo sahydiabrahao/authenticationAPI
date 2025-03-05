@@ -57,4 +57,20 @@ describe('SignUpController', () => {
       body: new Error('Missing param: password confirmation'),
     });
   });
+  test('Should return 400 if no password and passwordConfirmation is not equal provided', () => {
+    const { sut } = makeSut();
+
+    const httpRequest = {
+      body: {
+        email: 'anyEmail@mail.com',
+        password: 'anyPassword',
+        passwordConfirmation: 'anyPassword',
+      },
+    };
+    const httpResponse = sut.handle(httpRequest);
+    expect(httpResponse).toEqual({
+      statusCode: 400,
+      body: new Error('Missing param: password confirmation'),
+    });
+  });
 });
