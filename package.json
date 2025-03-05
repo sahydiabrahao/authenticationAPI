@@ -18,6 +18,8 @@
   "homepage": "https://github.com/sahydiabrahao/authenticationAPI#readme",
   "description": "",
   "devDependencies": {
-    "git-commit-msg-linter": "^5.0.8"
+    "@types/node": "^22.13.9",
+    "git-commit-msg-linter": "^5.0.8",
+    "typescript": "^5.8.2"
   }
 }
