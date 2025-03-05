@@ -1,4 +1,4 @@
-import { SignUpController } from '@/application';
+import { MissingParamError, SignUpController } from '@/application';
 
 type SutTypes = {
   sut: SignUpController;
@@ -24,7 +24,7 @@ describe('SignUpController', () => {
     const httpResponse = sut.handle(httpRequest);
     expect(httpResponse).toEqual({
       statusCode: 400,
-      body: new Error('Missing param: email'),
+      body: new MissingParamError('email'),
     });
   });
   test('Should return 400 if no password is provided', () => {
@@ -39,7 +39,7 @@ describe('SignUpController', () => {
     const httpResponse = sut.handle(httpRequest);
     expect(httpResponse).toEqual({
       statusCode: 400,
-      body: new Error('Missing param: password'),
+      body: new MissingParamError('password'),
     });
   });
   test('Should return 400 if no passwordConfirmation is provided', () => {
@@ -54,23 +54,7 @@ describe('SignUpController', () => {
     const httpResponse = sut.handle(httpRequest);
     expect(httpResponse).toEqual({
       statusCode: 400,
-      body: new Error('Missing param: password confirmation'),
-    });
-  });
-  test('Should return 400 if no password and passwordConfirmation is not equal provided', () => {
-    const { sut } = makeSut();
-
-    const httpRequest = {
-      body: {
-        email: 'anyEmail@mail.com',
-        password: 'anyPassword',
-        passwordConfirmation: 'anyPassword',
-      },
-    };
-    const httpResponse = sut.handle(httpRequest);
-    expect(httpResponse).toEqual({
-      statusCode: 400,
-      body: new Error('Missing param: password confirmation'),
+      body: new MissingParamError('password confirmation'),
     });
   });
 });
