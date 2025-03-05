@@ -1,6 +1,11 @@
-import { HttpRequestModel, HttpResponseModel, MissingParamError } from '@/application';
+import {
+  ControllerModel,
+  HttpRequestModel,
+  HttpResponseModel,
+  MissingParamError,
+} from '@/application';
 
-export class SignUpController {
+export class AddAccountController implements ControllerModel {
   handle(httpRequest: HttpRequestModel): HttpResponseModel {
     const requiredFields = ['email', 'password', 'passwordConfirmation'];
     for (const field of requiredFields) {

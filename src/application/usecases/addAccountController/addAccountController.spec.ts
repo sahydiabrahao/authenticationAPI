@@ -1,17 +1,17 @@
-import { MissingParamError, SignUpController } from '@/application';
+import { MissingParamError, AddAccountController } from '@/application';
 
 type SutTypes = {
-  sut: SignUpController;
+  sut: AddAccountController;
 };
 
 const makeSut = (): SutTypes => {
-  const sut = new SignUpController();
+  const sut = new AddAccountController();
   return {
     sut,
   };
 };
 
-describe('SignUpController', () => {
+describe('AddAccountController', () => {
   test('Should return 400 if no email is provided', () => {
     const { sut } = makeSut();
 
