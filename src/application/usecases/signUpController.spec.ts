@@ -54,7 +54,7 @@ describe('SignUpController', () => {
     const httpResponse = sut.handle(httpRequest);
     expect(httpResponse).toEqual({
       statusCode: 400,
-      body: new MissingParamError('password confirmation'),
+      body: new MissingParamError('passwordConfirmation'),
     });
   });
 });
