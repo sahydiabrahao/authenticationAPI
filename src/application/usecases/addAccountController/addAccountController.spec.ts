@@ -63,6 +63,20 @@ describe('AddAccountController', () => {
       body: new MissingParamError('passwordConfirmation'),
     });
   });
+  test('Should call EmailValidator with correct email', () => {
+    const { sut, emailValidatorStub } = makeSut();
+    const httpRequest = {
+      body: {
+        email: 'anyEmail@mail.com',
+        password: 'anyPassword',
+        passwordConfirmation: 'anyPassword',
+      },
+    };
+
+    const isValidSpy = jest.spyOn(emailValidatorStub, 'isValid');
+    sut.handle(httpRequest);
+    expect(isValidSpy).toHaveBeenCalledWith(httpRequest.body.email);
+  });
   test('Should return 400 if invalid email is provided', () => {
     const { sut, emailValidatorStub } = makeSut();
     const httpRequest = {
