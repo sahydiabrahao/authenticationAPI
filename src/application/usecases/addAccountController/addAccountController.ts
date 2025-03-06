@@ -7,9 +7,10 @@ import {
   MissingParamError,
   ServerError,
 } from '@/application';
+import { AddAccountModel } from '@/domain';
 
 export class AddAccountController implements ControllerModel {
-  constructor(readonly emailValidator: EmailValidatorModel) {}
+  constructor(readonly emailValidator: EmailValidatorModel, readonly addAccount: AddAccountModel) {}
 
   handle(httpRequest: HttpRequestModel): HttpResponseModel {
     try {
@@ -23,6 +24,8 @@ export class AddAccountController implements ControllerModel {
       if (!isValid) return { statusCode: 400, body: new InvalidParamError('email') };
       if (password !== passwordConfirmation)
         return { statusCode: 400, body: new InvalidParamError('passwordConfirmation') };
+      const account = this.addAccount.add({ email, password });
+
       return { statusCode: 200, body: 'Success' };
     } catch (error) {
       return { statusCode: 500, body: new ServerError() };
