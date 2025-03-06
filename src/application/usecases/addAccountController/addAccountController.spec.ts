@@ -1,4 +1,10 @@
-import { MissingParamError, InvalidParamError, AddAccountController } from '@/application';
+import {
+  MissingParamError,
+  InvalidParamError,
+  AddAccountController,
+  ServerError,
+} from '@/application';
+import { Server } from 'http';
 
 type SutTypes = {
   sut: AddAccountController;
@@ -72,7 +78,6 @@ describe('AddAccountController', () => {
         passwordConfirmation: 'anyPassword',
       },
     };
-
     const isValidSpy = jest.spyOn(emailValidatorStub, 'isValid');
     sut.handle(httpRequest);
     expect(isValidSpy).toHaveBeenCalledWith(httpRequest.body.email);
@@ -86,12 +91,29 @@ describe('AddAccountController', () => {
         passwordConfirmation: 'anyPassword',
       },
     };
-
     jest.spyOn(emailValidatorStub, 'isValid').mockReturnValue(false);
     const httpResponse = sut.handle(httpRequest);
     expect(httpResponse).toEqual({
       statusCode: 400,
       body: new InvalidParamError('email'),
+    });
+  });
+  test('Should return 500 if EmailValidator throws an error', () => {
+    const { sut, emailValidatorStub } = makeSut();
+    const httpRequest = {
+      body: {
+        email: 'invalidEmail@mail.com',
+        password: 'anyPassword',
+        passwordConfirmation: 'anyPassword',
+      },
+    };
+    jest.spyOn(emailValidatorStub, 'isValid').mockImplementationOnce(() => {
+      throw new Error();
+    });
+    const httpResponse = sut.handle(httpRequest);
+    expect(httpResponse).toEqual({
+      statusCode: 500,
+      body: new ServerError(),
     });
   });
 });

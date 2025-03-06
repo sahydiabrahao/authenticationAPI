@@ -6,3 +6,4 @@ export * from './protocols/controllerModel';
 export * from './usecases/errors/invalidParamError';
 export * from './usecases/errors/missingParamError';
 export * from './protocols/emailValidatorModel';
+export * from './usecases/errors/serverError';
