@@ -1,12 +1,12 @@
 import {
   ControllerModel,
-  EmailValidatorModel,
   HttpRequestModel,
   HttpResponseModel,
   InvalidParamError,
   MissingParamError,
   ServerError,
-} from '@/application';
+} from '@/presentation';
+import { EmailValidatorModel } from '@/utils';
 import { AddAccountModel } from '@/domain';
 
 export class AddAccountController implements ControllerModel {

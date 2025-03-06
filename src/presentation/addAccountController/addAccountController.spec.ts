@@ -3,9 +3,9 @@ import {
   InvalidParamError,
   AddAccountController,
   ServerError,
-  EmailValidatorModel,
-} from '@/application';
+} from '@/presentation';
 import { AccountModel, AddAccountModel, AddAccountParamsModel } from '@/domain';
+import { EmailValidatorModel } from '@/utils';
 
 type SutTypes = {
   sut: AddAccountController;
