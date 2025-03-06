@@ -25,8 +25,7 @@ export class AddAccountController implements ControllerModel {
       if (password !== passwordConfirmation)
         return { statusCode: 400, body: new InvalidParamError('passwordConfirmation') };
       const account = this.addAccount.add({ email, password });
-
-      return { statusCode: 200, body: 'Success' };
+      return { statusCode: 200, body: account };
     } catch (error) {
       return { statusCode: 500, body: new ServerError() };
     }

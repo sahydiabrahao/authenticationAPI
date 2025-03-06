@@ -186,4 +186,20 @@ describe('AddAccountController', () => {
       body: new ServerError(),
     });
   });
+  test('Should return 200 if valid data is provided', () => {
+    const { sut } = makeSut();
+    const httpRequest = {
+      body: {
+        email: 'validEmail@mail.com',
+        password: 'validPassword',
+        passwordConfirmation: 'validPassword',
+      },
+    };
+
+    const httpResponse = sut.handle(httpRequest);
+    expect(httpResponse).toEqual({
+      statusCode: 200,
+      body: { id: 'validId', email: 'validEmail@mail.com', password: 'validPassword' },
+    });
+  });
 });
