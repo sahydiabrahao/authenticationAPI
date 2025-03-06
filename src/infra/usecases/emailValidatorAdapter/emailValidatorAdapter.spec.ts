@@ -1,5 +1,6 @@
 import { EmailValidatorModel } from '@/application';
 import { EmailValidatorAdapter } from '@/infra';
+import validator from 'validator';
 
 type SutTypes = {
   sut: EmailValidatorModel;
@@ -12,11 +13,22 @@ const makeSut = (): SutTypes => {
   };
 };
 
+jest.mock('validator', () => ({
+  isEmail(): boolean {
+    return true;
+  },
+}));
+
 describe('EmailValidatorAdapter', () => {
   test('Should return false if Validator returns false', async () => {
     const { sut } = makeSut();
-    jest.spyOn(sut, 'isValid').mockReturnValueOnce(Promise.resolve(false));
+    jest.spyOn(validator, 'isEmail').mockReturnValueOnce(false);
     const isValid = await sut.isValid('anyEmail@mail.com');
     expect(isValid).toBe(false);
+  });
+  test('Should return true if Validator returns true', async () => {
+    const { sut } = makeSut();
+    const isValid = await sut.isValid('anyEmail@mail.com');
+    expect(isValid).toBe(true);
   });
 });
