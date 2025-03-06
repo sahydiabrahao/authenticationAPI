@@ -69,19 +69,6 @@ describe('AddAccountController', () => {
       body: new MissingParamError('passwordConfirmation'),
     });
   });
-  test('Should call EmailValidator with correct email', () => {
-    const { sut, emailValidatorStub } = makeSut();
-    const httpRequest = {
-      body: {
-        email: 'anyEmail@mail.com',
-        password: 'anyPassword',
-        passwordConfirmation: 'anyPassword',
-      },
-    };
-    const isValidSpy = jest.spyOn(emailValidatorStub, 'isValid');
-    sut.handle(httpRequest);
-    expect(isValidSpy).toHaveBeenCalledWith(httpRequest.body.email);
-  });
   test('Should return 400 if invalid email is provided', () => {
     const { sut, emailValidatorStub } = makeSut();
     const httpRequest = {
@@ -97,6 +84,20 @@ describe('AddAccountController', () => {
       statusCode: 400,
       body: new InvalidParamError('email'),
     });
+  });
+  test('Should call EmailValidator with correct email', () => {
+    const { sut, emailValidatorStub } = makeSut();
+    const httpRequest = {
+      body: {
+        email: 'anyEmail@mail.com',
+        password: 'anyPassword',
+        passwordConfirmation: 'anyPassword',
+      },
+    };
+
+    const isValidSpy = jest.spyOn(emailValidatorStub, 'isValid');
+    sut.handle(httpRequest);
+    expect(isValidSpy).toHaveBeenCalledWith(httpRequest.body.email);
   });
   test('Should return 500 if EmailValidator throws an error', () => {
     const { sut, emailValidatorStub } = makeSut();
@@ -114,6 +115,21 @@ describe('AddAccountController', () => {
     expect(httpResponse).toEqual({
       statusCode: 500,
       body: new ServerError(),
+    });
+  });
+  test('Should return 400 if the password does not match the password confirmation', () => {
+    const { sut } = makeSut();
+    const httpRequest = {
+      body: {
+        email: 'anyEmail@mail.com',
+        password: 'anyPassword',
+        passwordConfirmation: 'invalidPassword',
+      },
+    };
+    const httpResponse = sut.handle(httpRequest);
+    expect(httpResponse).toEqual({
+      statusCode: 400,
+      body: new InvalidParamError('passwordConfirmation'),
     });
   });
 });
