@@ -7,3 +7,6 @@ export * from './usecases/errors/invalidParamError';
 export * from './usecases/errors/missingParamError';
 export * from './protocols/emailValidatorModel';
 export * from './usecases/errors/serverError';
+export * from './usecases/addAccountToDatabase/addAccountToDatabase';
+export * from './protocols/passwordHasherModel';
+export * from './protocols/addAccountToDatabaseModel';
