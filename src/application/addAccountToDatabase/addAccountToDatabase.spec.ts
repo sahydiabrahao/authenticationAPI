@@ -3,10 +3,12 @@ import {
   AddAccountToDatabaseModel,
   PasswordHasherModel,
 } from '@/application';
+import { AccountModel, AddAccountParamsModel } from '@/domain';
 
 type SutTypes = {
   sut: AddAccountToDatabaseModel;
   passwordHasherStub: PasswordHasherModel;
+  addAccountToDatabaseStub: AddAccountToDatabaseModel;
 };
 
 const makePasswordHasherStub = (): PasswordHasherModel => {
@@ -17,13 +19,27 @@ const makePasswordHasherStub = (): PasswordHasherModel => {
   }
   return new PasswordHasherStub();
 };
+const makeAddAccountToDatabaseStub = (): AddAccountToDatabaseModel => {
+  class AddAccountToDatabaseStub implements AddAccountToDatabaseModel {
+    async add(account: AddAccountParamsModel): Promise<AccountModel> {
+      return Promise.resolve({
+        id: 'validId',
+        email: 'validEmail',
+        password: 'hashedPassword',
+      });
+    }
+  }
+  return new AddAccountToDatabaseStub();
+};
 
 const makeSut = (): SutTypes => {
   const passwordHasherStub = makePasswordHasherStub();
-  const sut = new AddAccountToDatabase(passwordHasherStub);
+  const addAccountToDatabaseStub = makeAddAccountToDatabaseStub();
+  const sut = new AddAccountToDatabase(passwordHasherStub, addAccountToDatabaseStub);
   return {
     sut,
     passwordHasherStub,
+    addAccountToDatabaseStub,
   };
 };
 
@@ -41,5 +57,15 @@ describe('AddAccountToDatabase', () => {
     jest.spyOn(passwordHasherStub, 'hash').mockReturnValueOnce(Promise.reject(new Error()));
     const promise = sut.add(validAccount);
     expect(promise).rejects.toThrow();
+  });
+  test('Should call addAccountToDatabaseAdapter with correct account', async () => {
+    const { sut, addAccountToDatabaseStub } = makeSut();
+    const validAccount = { email: 'validEamil@mail.com', password: 'validPassword' };
+    const addSpy = jest.spyOn(addAccountToDatabaseStub, 'add');
+    await sut.add(validAccount);
+    expect(addSpy).toHaveBeenCalledWith({
+      email: 'validEamil@mail.com',
+      password: 'hashedPassword',
+    });
   });
 });
