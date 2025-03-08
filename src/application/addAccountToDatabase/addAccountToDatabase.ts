@@ -9,7 +9,7 @@ export class AddAccountToDatabase implements AddAccountModel {
   async add(account: AddAccountParamsModel): Promise<AccountModel> {
     const hashedPassword = await this.passwordHasher.hash(account.password);
     const accountWithHashedPassword = { ...account, password: hashedPassword };
-    this.addAccountToDatabaseAdapter.add(accountWithHashedPassword);
+    await this.addAccountToDatabaseAdapter.add(accountWithHashedPassword);
     return Promise.resolve({ ...account, id: 'validId' });
   }
 }

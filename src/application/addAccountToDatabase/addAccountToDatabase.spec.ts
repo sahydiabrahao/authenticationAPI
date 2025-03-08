@@ -68,4 +68,11 @@ describe('AddAccountToDatabase', () => {
       password: 'hashedPassword',
     });
   });
+  test('Should throw an error to AddAccountController when addAccountToDatabaseAdapter throws an error', async () => {
+    const { sut, addAccountToDatabaseStub } = makeSut();
+    const validAccount = { email: 'validEamil@mail.com', password: 'validPassword' };
+    jest.spyOn(addAccountToDatabaseStub, 'add').mockReturnValueOnce(Promise.reject(new Error()));
+    const promise = sut.add(validAccount);
+    expect(promise).rejects.toThrow();
+  });
 });
