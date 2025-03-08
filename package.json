@@ -26,6 +26,7 @@
   "homepage": "https://github.com/sahydiabrahao/authenticationAPI#readme",
   "description": "",
   "devDependencies": {
+    "@types/bcrypt": "^5.0.2",
     "@types/jest": "^29.5.14",
     "@types/node": "^22.13.9",
     "@types/validator": "^13.12.2",
@@ -44,6 +45,7 @@
     "typescript": "^5.8.2"
   },
   "dependencies": {
+    "bcrypt": "^5.1.1",
     "validator": "^13.12.0"
   }
 }

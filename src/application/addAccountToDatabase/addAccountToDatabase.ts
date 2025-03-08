@@ -3,8 +3,8 @@ import { AccountModel, AddAccountModel, AddAccountParamsModel } from '@/domain';
 
 export class AddAccountToDatabase implements AddAccountModel {
   constructor(
-    readonly passwordHasher: PasswordHasherModel,
-    readonly addAccountToDatabase: AddAccountToDatabaseModel
+    private readonly passwordHasher: PasswordHasherModel,
+    private readonly addAccountToDatabase: AddAccountToDatabaseModel
   ) {}
   async add(account: AddAccountParamsModel): Promise<AccountModel> {
     const hashedPassword = await this.passwordHasher.hash(account.password);

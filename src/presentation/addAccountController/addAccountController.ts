@@ -10,7 +10,10 @@ import { EmailValidatorModel } from '@/utils';
 import { AddAccountModel } from '@/domain';
 
 export class AddAccountController implements ControllerModel {
-  constructor(readonly emailValidator: EmailValidatorModel, readonly addAccount: AddAccountModel) {}
+  constructor(
+    private readonly emailValidator: EmailValidatorModel,
+    private readonly addAccount: AddAccountModel
+  ) {}
 
   async handle(httpRequest: HttpRequestModel): Promise<HttpResponseModel> {
     try {
