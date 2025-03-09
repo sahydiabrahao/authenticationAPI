@@ -1,4 +1,4 @@
-import { MongoDbAdapter, MongoHelper } from '@/infra';
+import { MongoDbAdapter, MongoHelper } from '@infra';
 
 type SutTypes = {
   sut: MongoDbAdapter;

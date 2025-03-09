@@ -8,7 +8,12 @@
     "checkJs": false,
     "baseUrl": "./",
     "paths": {
-      "@/*": ["src/*"]
+      "@domain": ["src/domain"],
+      "@infra": ["src/infra"],
+      "@main": ["src/main"],
+      "@presentation": ["src/presentation"],
+      "@utils": ["src/utils"],
+      "@application": ["src/application"]
     },
     "esModuleInterop": true,
     "skipLibCheck": true,
@@ -20,6 +25,6 @@
   },
   "include": ["src/**/*"],
 
-  // "exclude": ["node_modules", "dist"]
-  "exclude": ["node_modules", "dist", "**/*.test.ts", "**/*.spec.ts"]
+  "exclude": ["node_modules", "dist"]
+  // "exclude": ["node_modules", "dist", "**/*.test.ts", "**/*.spec.ts"]
 }

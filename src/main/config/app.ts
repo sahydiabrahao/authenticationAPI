@@ -1,6 +1,5 @@
 import express from 'express';
-import { middlewares } from './middlewares';
-import { routes } from './routes';
+import { middlewares, routes } from '@main';
 
 const app = express();
 middlewares(app);

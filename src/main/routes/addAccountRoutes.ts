@@ -1,6 +1,5 @@
 import { Router } from 'express';
-import { addAccountControllerFactory } from '../factories/addAccountControllerFactory';
-import { expressRouteAdapter } from '../adapters/expressRouteAdapter';
+import { addAccountControllerFactory, expressRouteAdapter } from '@main';
 
 export default (router: Router): void => {
   router.post('/addAccount', expressRouteAdapter(addAccountControllerFactory()));

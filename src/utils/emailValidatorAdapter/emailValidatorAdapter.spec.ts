@@ -1,4 +1,4 @@
-import { EmailValidatorAdapter, EmailValidatorModel } from '@/utils';
+import { EmailValidatorAdapter, EmailValidatorModel } from '@utils';
 import validator from 'validator';
 
 type SutTypes = {

@@ -1,4 +1,4 @@
-import { ControllerModel, HttpRequestModel } from '@/presentation';
+import { ControllerModel, HttpRequestModel } from '@presentation';
 import { Request, Response } from 'express';
 
 export const expressRouteAdapter = (controller: ControllerModel) => {

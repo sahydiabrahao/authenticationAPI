@@ -5,9 +5,9 @@ import {
   InvalidParamError,
   MissingParamError,
   ServerError,
-} from '../../presentation';
-import { EmailValidatorModel } from '@/utils';
-import { AddAccountModel } from '@/domain';
+} from '@presentation';
+import { EmailValidatorModel } from '@utils';
+import { AddAccountModel } from '@domain';
 
 export class AddAccountController implements ControllerModel {
   constructor(

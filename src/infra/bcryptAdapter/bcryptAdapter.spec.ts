@@ -1,5 +1,5 @@
 import bcrypt from 'bcrypt';
-import { BcryptAdapter } from '@/infra';
+import { BcryptAdapter } from '@infra';
 
 type SutTypes = {
   sut: BcryptAdapter;

@@ -1,9 +1,5 @@
-import {
-  AddAccountToDatabase,
-  AddAccountToDatabaseModel,
-  PasswordHasherModel,
-} from '@/application';
-import { AccountModel, AddAccountParamsModel } from '@/domain';
+import { AddAccountToDatabase, AddAccountToDatabaseModel, PasswordHasherModel } from '@application';
+import { AccountModel, AddAccountParamsModel } from '@domain';
 
 type SutTypes = {
   sut: AddAccountToDatabaseModel;

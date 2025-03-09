@@ -1,5 +1,5 @@
-import { AddAccountToDatabaseModel } from '@/application';
-import { AddAccountParamsModel, AccountModel } from '@/domain';
+import { AddAccountToDatabaseModel } from '@application';
+import { AddAccountParamsModel, AccountModel } from '@domain';
 import { MongoHelper } from './mongoHelper';
 
 export class MongoDbAdapter implements AddAccountToDatabaseModel {

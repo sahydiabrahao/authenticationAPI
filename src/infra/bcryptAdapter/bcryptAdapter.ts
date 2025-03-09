@@ -1,4 +1,4 @@
-import { PasswordHasherModel } from '@/application';
+import { PasswordHasherModel } from '@application';
 import bcrypt from 'bcrypt';
 
 export class BcryptAdapter implements PasswordHasherModel {

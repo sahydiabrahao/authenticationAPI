@@ -1,6 +1,6 @@
 import request from 'supertest';
-import app from '@/main';
-import { MongoHelper } from '@/infra';
+import app from '../config/app';
+import { MongoHelper } from '@infra';
 
 describe('AddAccout Routes', () => {
   beforeAll(async () => {

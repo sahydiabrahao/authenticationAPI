@@ -1,7 +1,7 @@
-import { AddAccountToDatabase } from '../../application';
-import { BcryptAdapter, MongoDbAdapter } from '../../infra';
-import { AddAccountController } from '../../presentation';
-import { EmailValidatorAdapter } from '../../utils';
+import { AddAccountToDatabase } from '@application';
+import { BcryptAdapter, MongoDbAdapter } from '@infra';
+import { AddAccountController } from '@presentation';
+import { EmailValidatorAdapter } from '@utils';
 
 export const addAccountControllerFactory = (): AddAccountController => {
   const SALT = 12;

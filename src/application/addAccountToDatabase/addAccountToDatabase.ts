@@ -1,5 +1,5 @@
-import { AddAccountToDatabaseModel, PasswordHasherModel } from '@/application';
-import { AccountModel, AddAccountModel, AddAccountParamsModel } from '@/domain';
+import { AddAccountToDatabaseModel, PasswordHasherModel } from '@application';
+import { AccountModel, AddAccountModel, AddAccountParamsModel } from '@domain';
 
 export class AddAccountToDatabase implements AddAccountModel {
   constructor(

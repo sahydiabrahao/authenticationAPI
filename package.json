@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "start": "npx tsc && node ./dist/main/server.js",
+    "start": "ts-node -r tsconfig-paths/register ./src/main/server.ts",
     "lint": "eslint .",
     "test": "jest --passWithNoTests --silent --noStackTrace --runInBand",
     "test:verbose": "jest --passWithNoTests --runInBand",
@@ -47,6 +47,8 @@
     "lint-staged": "^15.4.3",
     "supertest": "^7.0.0",
     "ts-jest": "^29.2.6",
+    "ts-node": "^10.9.2",
+    "tsconfig-paths": "^4.2.0",
     "typescript": "^5.8.2"
   },
   "dependencies": {
