@@ -5,7 +5,7 @@ import {
   InvalidParamError,
   MissingParamError,
   ServerError,
-} from '@/presentation';
+} from '../../presentation';
 import { EmailValidatorModel } from '@/utils';
 import { AddAccountModel } from '@/domain';
 

@@ -1,7 +1,7 @@
 import { Router } from 'express';
+import { addAccountControllerFactory } from '../factories/addAccountControllerFactory';
+import { expressRouteAdapter } from '../adapters/expressRouteAdapter';
 
 export default (router: Router): void => {
-  router.post('/addAccount', (req, res) => {
-    res.json({ statusCode: 200 });
-  });
+  router.post('/addAccount', expressRouteAdapter(addAccountControllerFactory()));
 };

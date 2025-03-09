@@ -4,3 +4,4 @@ export * from './config/routes';
 export * from './middlewares/bodyParser/bodyParser';
 export * from './middlewares/cors/cors';
 export * from './middlewares/contentType/contentType';
+export * from './factories/addAccountControllerFactory';

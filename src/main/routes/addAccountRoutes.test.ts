@@ -22,6 +22,6 @@ describe('AddAccout Routes', () => {
         password: 'anyPassword',
         passwordConfirmation: 'anyPassword',
       })
-      .expect({ statusCode: 200 });
+      .expect(200);
   });
 });
