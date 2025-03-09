@@ -1,5 +1,3 @@
-import { clear } from 'console';
-import { get } from 'http';
 import { Collection, MongoClient } from 'mongodb';
 
 export const MongoHelper = {
@@ -35,5 +33,11 @@ export const MongoHelper = {
     for (const collection of collections) {
       await collection.deleteMany({});
     }
+  },
+
+  map: (collection: any): any => {
+    const collectionWith_Id: any = collection;
+    const { _id, ...collectionWithout_id } = collectionWith_Id;
+    return collectionWithout_id;
   },
 };
