@@ -4,7 +4,7 @@ export const MongoHelper = {
   mongoDbConnection: null as MongoClient | null,
 
   async connect(url: string) {
-    this.mongoDbConnection = await MongoClient.connect(process.env.MONGO_URL || url);
+    this.mongoDbConnection = await MongoClient.connect(url);
   },
 
   async disconnect() {
