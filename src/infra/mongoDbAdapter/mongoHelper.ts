@@ -30,10 +30,10 @@ export const MongoHelper = {
     return this.mongoDbConnection.db().collection(name);
   },
 
-  async clearCollection() {
+  async clearAllCollection() {
     const collections = await MongoHelper.getConnection().db().collections();
     for (const collection of collections) {
-      await collection.deleteMany({}); // Remove todos os documentos da coleção
+      await collection.deleteMany({});
     }
   },
 };
