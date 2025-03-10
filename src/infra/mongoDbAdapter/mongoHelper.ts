@@ -2,29 +2,26 @@ import { Collection, MongoClient } from 'mongodb';
 
 export const MongoHelper = {
   mongoDbConnection: null as MongoClient | null,
+  url: process.env.MONGO_URL,
 
   async connect(url: string) {
+    url = this.url;
     this.mongoDbConnection = await MongoClient.connect(url);
   },
 
   async disconnect() {
-    if (this.mongoDbConnection) {
-      await this.mongoDbConnection.close();
-      this.mongoDbConnection = null;
-    }
+    if (this.mongoDbConnection) await this.mongoDbConnection.close();
+    this.mongoDbConnection = null;
   },
 
   getConnection() {
-    if (!this.mongoDbConnection) {
-      throw new Error('No MongoDB connection');
-    }
+    if (!this.mongoDbConnection) throw new Error('No MongoDB connection');
     return this.mongoDbConnection;
   },
 
-  getCollections(name: string): Collection {
-    if (!this.mongoDbConnection) {
-      throw new Error('No MongoDB connection');
-    }
+  async getCollections(name: string): Promise<Collection> {
+    if (!this.mongoDbConnection) await this.connect(this.url);
+    if (!this.mongoDbConnection) throw new Error('MongoDB connection failed.');
     return this.mongoDbConnection.db().collection(name);
   },
 

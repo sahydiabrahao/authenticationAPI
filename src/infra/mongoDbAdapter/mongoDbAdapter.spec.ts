@@ -11,7 +11,7 @@ const makeSut = (): SutTypes => {
 
 describe('MongoDbAdapter', () => {
   beforeAll(async () => {
-    await MongoHelper.connect(process.env.MONGO_URL || 'mongodb://localhost:27017/jest');
+    await MongoHelper.connect(process.env.MONGO_URL);
   });
 
   afterAll(async () => {

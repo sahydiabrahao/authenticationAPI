@@ -4,7 +4,7 @@ import { MongoHelper } from '@infra';
 
 describe('AddAccout Routes', () => {
   beforeAll(async () => {
-    await MongoHelper.connect(process.env.MONGO_URL || 'mongodb://localhost:27017/jest');
+    await MongoHelper.connect(process.env.MONGO_URL);
   });
 
   afterAll(async () => {
