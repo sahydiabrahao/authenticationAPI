@@ -42,8 +42,8 @@ describe('LogController Decorator', () => {
     await sut.handle(request);
     expect(handleSpy).toHaveBeenCalledWith(request);
   });
-  test('Should return', async () => {
-    const { sut, controllerStub } = makeSut();
+  test('Should return the same result od the controller', async () => {
+    const { sut } = makeSut();
     const request = {
       body: {
         email: 'anyEmail@mail.com',
@@ -51,8 +51,13 @@ describe('LogController Decorator', () => {
         passwordConfirmation: 'anyPassword',
       },
     };
-    const handleSpy = jest.spyOn(controllerStub, 'handle');
-    await sut.handle(request);
-    expect(handleSpy).toHaveBeenCalledWith(request);
+    const httpResponse = await sut.handle(request);
+    expect(httpResponse).toEqual({
+      statusCode: 500,
+      body: {
+        email: 'anyEmail@mail.com',
+        password: 'anyPassword',
+      },
+    });
   });
 });
