@@ -8,12 +8,12 @@
     "checkJs": false,
     "baseUrl": "./",
     "paths": {
-      "@domain": ["src/domain"],
-      "@infra": ["src/infra"],
       "@main": ["src/main"],
       "@presentation": ["src/presentation"],
       "@utils": ["src/utils"],
-      "@application": ["src/application"]
+      "@domain": ["src/domain"],
+      "@application": ["src/application"],
+      "@infra": ["src/infra"]
     },
     "esModuleInterop": true,
     "skipLibCheck": true,

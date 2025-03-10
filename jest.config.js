@@ -8,11 +8,11 @@ module.exports = {
     '.+\\.ts$': 'ts-jest',
   },
   moduleNameMapper: {
-    '@domain': '<rootDir>/src/domain',
-    '@infra': '<rootDir>/src/infra',
     '@main': '<rootDir>/src/main',
     '@presentation': '<rootDir>/src/presentation',
     '@utils': '<rootDir>/src/utils',
+    '@domain': '<rootDir>/src/domain',
     '@application': '<rootDir>/src/application',
+    '@infra': '<rootDir>/src/infra',
   },
 };
