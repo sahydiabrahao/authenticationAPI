@@ -1,6 +1,12 @@
+import { AddLogErrorToDatabaseModel } from '@application';
 import { LogControllerDecorator } from '../decorators/logControllerDecorator';
-import { ControllerModel, HttpRequestModel, HttpResponseModel } from '@presentation';
+import { ControllerModel, HttpRequestModel, HttpResponseModel, ServerError } from '@presentation';
 
+class AddLogErrorToDatabaseStub implements AddLogErrorToDatabaseModel {
+  async log(stackError: string): Promise<void> {
+    return Promise.resolve();
+  }
+}
 class ControllerStub implements ControllerModel {
   async handle(httpRequest: HttpRequestModel): Promise<HttpResponseModel> {
     const httpResponse: HttpResponseModel = {
@@ -16,15 +22,18 @@ class ControllerStub implements ControllerModel {
 
 type SutTypes = {
   sut: LogControllerDecorator;
-  controllerStub: ControllerStub;
+  controllerStub: ControllerModel;
+  addLogErrorToDatabaseStub: AddLogErrorToDatabaseModel;
 };
 
 const makeSut = (): SutTypes => {
+  const addLogErrorToDatabaseStub = new AddLogErrorToDatabaseStub();
   const controllerStub = new ControllerStub();
-  const sut = new LogControllerDecorator(controllerStub);
+  const sut = new LogControllerDecorator(controllerStub, addLogErrorToDatabaseStub);
   return {
     sut,
     controllerStub,
+    addLogErrorToDatabaseStub,
   };
 };
 
@@ -59,5 +68,22 @@ describe('LogController Decorator', () => {
         password: 'anyPassword',
       },
     });
+  });
+  test('Should call AddLogErrorToDatabase with correct error if controller returns ServerError', async () => {
+    const { sut, controllerStub, addLogErrorToDatabaseStub } = makeSut();
+    const request = {
+      body: {
+        email: 'anyEmail@mail.com',
+        password: 'anyPassword',
+        passwordConfirmation: 'anyPassword',
+      },
+    };
+    const fakeError = new ServerError();
+    fakeError.stack = 'anyStackError';
+    const error = { statusCode: 500, body: fakeError };
+    jest.spyOn(controllerStub, 'handle').mockReturnValueOnce(Promise.resolve(error));
+    const logSpy = jest.spyOn(addLogErrorToDatabaseStub, 'log');
+    await sut.handle(request);
+    expect(logSpy).toHaveBeenCalledWith('anyStackError');
   });
 });

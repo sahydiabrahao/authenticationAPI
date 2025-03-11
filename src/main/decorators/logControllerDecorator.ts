@@ -1,15 +1,16 @@
+import { AddLogErrorToDatabaseModel } from '@application';
 import { ControllerModel, HttpRequestModel, HttpResponseModel } from '@presentation';
-// import { LogErrorRepository } from '@infra';
 
 export class LogControllerDecorator implements ControllerModel {
   constructor(
-    private readonly controller: ControllerModel // private readonly logErrorRepository: LogErrorRepository
+    private readonly controller: ControllerModel,
+    private readonly addLogErrorToDatabase: AddLogErrorToDatabaseModel
   ) {}
 
   async handle(request: HttpRequestModel): Promise<HttpResponseModel> {
     const httpResponse = await this.controller.handle(request);
     if (httpResponse.statusCode === 500) {
-      // await this.logErrorRepository.logError(httpResponse.body.stack);
+      await this.addLogErrorToDatabase.log(httpResponse.body.stack);
     }
     return httpResponse;
   }
