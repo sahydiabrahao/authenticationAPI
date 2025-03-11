@@ -3,7 +3,7 @@ import { LogControllerDecorator } from '../decorators/logControllerDecorator';
 import { ControllerModel, HttpRequestModel, HttpResponseModel, ServerError } from '@presentation';
 
 class AddLogErrorToDatabaseStub implements AddLogErrorToDatabaseModel {
-  async log(stackError: string): Promise<void> {
+  async logError(stackError: string): Promise<void> {
     return Promise.resolve();
   }
 }
@@ -82,7 +82,7 @@ describe('LogController Decorator', () => {
     fakeError.stack = 'anyStackError';
     const error = { statusCode: 500, body: fakeError };
     jest.spyOn(controllerStub, 'handle').mockReturnValueOnce(Promise.resolve(error));
-    const logSpy = jest.spyOn(addLogErrorToDatabaseStub, 'log');
+    const logSpy = jest.spyOn(addLogErrorToDatabaseStub, 'logError');
     await sut.handle(request);
     expect(logSpy).toHaveBeenCalledWith('anyStackError');
   });

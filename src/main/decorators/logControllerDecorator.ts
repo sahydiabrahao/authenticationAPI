@@ -10,7 +10,7 @@ export class LogControllerDecorator implements ControllerModel {
   async handle(request: HttpRequestModel): Promise<HttpResponseModel> {
     const httpResponse = await this.controller.handle(request);
     if (httpResponse.statusCode === 500) {
-      await this.addLogErrorToDatabase.log(httpResponse.body.stack);
+      await this.addLogErrorToDatabase.logError(httpResponse.body.stack);
     }
     return httpResponse;
   }
