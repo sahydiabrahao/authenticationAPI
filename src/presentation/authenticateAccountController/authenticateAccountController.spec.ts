@@ -1,4 +1,9 @@
-import { AuthenticateAccountController, InvalidParamError, MissingParamError } from '@presentation';
+import {
+  AuthenticateAccountController,
+  InvalidParamError,
+  MissingParamError,
+  ServerError,
+} from '@presentation';
 import { EmailValidatorModel } from '@utils';
 
 type SutTypes = {
@@ -77,6 +82,22 @@ describe('AuthenticateAccountController', () => {
     expect(httpResponse).toEqual({
       statusCode: 400,
       body: new InvalidParamError('email'),
+    });
+  });
+  test('Should return 500 if EmailValidator throws an error', async () => {
+    const { sut, emailValidatorStub } = makeSut();
+    const httpRequest = {
+      body: {
+        email: 'invalidEmail@mail.com',
+        password: 'anyPassword',
+        passwordConfirmation: 'anyPassword',
+      },
+    };
+    jest.spyOn(emailValidatorStub, 'isValid').mockReturnValueOnce(Promise.reject(new Error()));
+    const httpResponse = await sut.handle(httpRequest);
+    expect(httpResponse).toEqual({
+      statusCode: 500,
+      body: new ServerError(),
     });
   });
 });
