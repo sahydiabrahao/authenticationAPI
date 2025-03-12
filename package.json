@@ -1,6 +1,6 @@
 {
   "name": "authenticationapi",
-  "version": "1.0.0",
+  "version": "0.0.0",
   "main": "index.js",
   "scripts": {
     "start": "ts-node -r tsconfig-paths/register ./src/main/server.ts",
