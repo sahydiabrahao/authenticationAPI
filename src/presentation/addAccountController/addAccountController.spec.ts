@@ -154,9 +154,9 @@ describe('AddAccountController', () => {
       },
     };
 
-    const addAccountSpy = jest.spyOn(addAccountStub, 'add');
+    const addSpy = jest.spyOn(addAccountStub, 'add');
     await sut.handle(httpRequest);
-    expect(addAccountSpy).toHaveBeenCalledWith({
+    expect(addSpy).toHaveBeenCalledWith({
       email: 'validEmail@mail.com',
       password: 'validPassword',
     });

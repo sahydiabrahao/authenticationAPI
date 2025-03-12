@@ -6,9 +6,21 @@ import {
 } from '@presentation';
 import { EmailValidatorModel } from '@utils';
 
+import { AuthenticationAccountModel, AuthenticationAccountParamsModel } from '@domain';
+
 type SutTypes = {
   sut: AuthenticateAccountController;
   emailValidatorStub: EmailValidatorModel;
+  authenticationAccountStub: AuthenticationAccountModel;
+};
+
+const makeAuthenticationAccountStub = (): AuthenticationAccountModel => {
+  class AuthenticationAccountStub implements AuthenticationAccountModel {
+    async auth(account: AuthenticationAccountParamsModel): Promise<string> {
+      return Promise.resolve('anyAccessToken');
+    }
+  }
+  return new AuthenticationAccountStub();
 };
 
 const makeEmailValidatorStub = (): EmailValidatorModel => {
@@ -21,11 +33,13 @@ const makeEmailValidatorStub = (): EmailValidatorModel => {
 };
 
 const makeSut = (): SutTypes => {
+  const authtenticationAccountStub = makeAuthenticationAccountStub();
   const emailValidatorStub = makeEmailValidatorStub();
-  const sut = new AuthenticateAccountController(emailValidatorStub);
+  const sut = new AuthenticateAccountController(emailValidatorStub, authtenticationAccountStub);
   return {
     sut,
     emailValidatorStub,
+    authenticationAccountStub: authtenticationAccountStub,
   };
 };
 
@@ -99,5 +113,17 @@ describe('AuthenticateAccountController', () => {
       statusCode: 500,
       body: new ServerError(),
     });
+  });
+  test('Should call AuthentitacionAccount with correct values', async () => {
+    const { sut, authenticationAccountStub: authtenticationAccountStub } = makeSut();
+    const httpRequest = {
+      body: {
+        email: 'validEmail@mail.com',
+        password: 'validPassword',
+      },
+    };
+    const authSpy = jest.spyOn(authtenticationAccountStub, 'auth');
+    await sut.handle(httpRequest);
+    expect(authSpy).toHaveBeenCalledWith(httpRequest.body);
   });
 });
