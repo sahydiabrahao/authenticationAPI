@@ -118,15 +118,15 @@ describe('AuthenticateAccountController', () => {
       body: new ServerError(),
     });
   });
-  test('Should call AuthentitacateAccount with correct values', async () => {
-    const { sut, authenticateAccountStub: authtenticationAccountStub } = makeSut();
+  test('Should call AuthenticateAccount with correct values', async () => {
+    const { sut, authenticateAccountStub } = makeSut();
     const httpRequest = {
       body: {
         email: 'validEmail@mail.com',
         password: 'validPassword',
       },
     };
-    const authSpy = jest.spyOn(authtenticationAccountStub, 'auth');
+    const authSpy = jest.spyOn(authenticateAccountStub, 'auth');
     await sut.handle(httpRequest);
     expect(authSpy).toHaveBeenCalledWith(httpRequest.body);
   });
@@ -143,6 +143,21 @@ describe('AuthenticateAccountController', () => {
     expect(httpResponse).toEqual({
       statusCode: 401,
       body: new UnauthorizedError(),
+    });
+  });
+  test('Should return 500 if AuthenticateAccount throws an error', async () => {
+    const { sut, authenticateAccountStub } = makeSut();
+    const httpRequest = {
+      body: {
+        email: 'validEmail@mail.com',
+        password: 'validPassword',
+      },
+    };
+    jest.spyOn(authenticateAccountStub, 'auth').mockReturnValueOnce(Promise.reject(new Error()));
+    const httpResponse = await sut.handle(httpRequest);
+    expect(httpResponse).toEqual({
+      statusCode: 500,
+      body: new ServerError(),
     });
   });
 });
