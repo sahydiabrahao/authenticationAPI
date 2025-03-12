@@ -1,15 +1,15 @@
-import { MongoDbAdapter, MongoHelper } from '@infra';
+import { AddAccountToDatabaseAdapter, MongoHelper } from '@infra';
 
 type SutTypes = {
-  sut: MongoDbAdapter;
+  sut: AddAccountToDatabaseAdapter;
 };
 
 const makeSut = (): SutTypes => {
-  const sut = new MongoDbAdapter();
+  const sut = new AddAccountToDatabaseAdapter();
   return { sut };
 };
 
-describe('MongoDbAdapter', () => {
+describe('AddAccountToDatabaseAdapter', () => {
   beforeAll(async () => {
     await MongoHelper.connect(process.env.MONGO_URL);
   });
