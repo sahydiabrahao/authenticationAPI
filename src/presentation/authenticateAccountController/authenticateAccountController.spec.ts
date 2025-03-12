@@ -1,13 +1,26 @@
 import { AuthenticateAccountController, MissingParamError } from '@presentation';
+import { EmailValidatorModel } from '@utils';
 
 type SutTypes = {
   sut: AuthenticateAccountController;
+  emailValidatorStub: EmailValidatorModel;
+};
+
+const makeEmailValidatorStub = (): EmailValidatorModel => {
+  class EmailValidatorStub implements EmailValidatorModel {
+    async isValid(email: string): Promise<boolean> {
+      return Promise.resolve(true);
+    }
+  }
+  return new EmailValidatorStub();
 };
 
 const makeSut = (): SutTypes => {
-  const sut = new AuthenticateAccountController();
+  const emailValidatorStub = makeEmailValidatorStub();
+  const sut = new AuthenticateAccountController(emailValidatorStub);
   return {
     sut,
+    emailValidatorStub,
   };
 };
 
@@ -38,5 +51,17 @@ describe('AuthenticateAccountController', () => {
       statusCode: 400,
       body: new MissingParamError('password'),
     });
+  });
+  test('Should call EmailValidator with correct email', async () => {
+    const { sut, emailValidatorStub } = makeSut();
+    const httpRequest = {
+      body: {
+        email: 'anyEmail@mail.com',
+        password: 'anyPassword',
+      },
+    };
+    const isValidSpy = jest.spyOn(emailValidatorStub, 'isValid');
+    await sut.handle(httpRequest);
+    expect(isValidSpy).toHaveBeenCalledWith(httpRequest.body.email);
   });
 });

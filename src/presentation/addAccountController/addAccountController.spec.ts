@@ -109,7 +109,6 @@ describe('AddAccountController', () => {
         passwordConfirmation: 'anyPassword',
       },
     };
-
     const isValidSpy = jest.spyOn(emailValidatorStub, 'isValid');
     await sut.handle(httpRequest);
     expect(isValidSpy).toHaveBeenCalledWith(httpRequest.body.email);
