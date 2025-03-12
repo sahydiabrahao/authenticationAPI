@@ -6,6 +6,7 @@ import {
   InvalidParamError,
   MissingParamError,
   ServerError,
+  UnauthorizedError,
 } from '@presentation';
 import { EmailValidatorModel } from '@utils';
 
@@ -21,7 +22,8 @@ export class AuthenticateAccountController implements ControllerModel {
       if (!password) return { statusCode: 400, body: new MissingParamError('password') };
       const isValid = await this.emailValidator.isValid(email);
       if (!isValid) return { statusCode: 400, body: new InvalidParamError('email') };
-      const accessToken = this.authenticationAccount.auth({ email, password });
+      const accessToken = await this.authenticationAccount.auth({ email, password });
+      if (!accessToken) return { statusCode: 401, body: new UnauthorizedError() };
       return { statusCode: 200, body: accessToken };
     } catch (error) {
       return { statusCode: 500, body: new ServerError() };

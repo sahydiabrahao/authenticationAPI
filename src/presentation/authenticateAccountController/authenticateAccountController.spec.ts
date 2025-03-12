@@ -1,12 +1,18 @@
 import {
   AuthenticateAccountController,
+  HttpResponseModel,
   InvalidParamError,
   MissingParamError,
   ServerError,
+  UnauthorizedError,
 } from '@presentation';
 import { EmailValidatorModel } from '@utils';
 
-import { AuthenticationAccountModel, AuthenticationAccountParamsModel } from '@domain';
+import {
+  AuthenticationAccountModel,
+  AuthenticationAccountParamsModel,
+  AuthenticationModel,
+} from '@domain';
 
 type SutTypes = {
   sut: AuthenticateAccountController;
@@ -16,13 +22,12 @@ type SutTypes = {
 
 const makeAuthenticationAccountStub = (): AuthenticationAccountModel => {
   class AuthenticationAccountStub implements AuthenticationAccountModel {
-    async auth(account: AuthenticationAccountParamsModel): Promise<string> {
+    async auth(account: AuthenticationAccountParamsModel): Promise<AuthenticationModel> {
       return Promise.resolve('anyAccessToken');
     }
   }
   return new AuthenticationAccountStub();
 };
-
 const makeEmailValidatorStub = (): EmailValidatorModel => {
   class EmailValidatorStub implements EmailValidatorModel {
     async isValid(email: string): Promise<boolean> {
@@ -31,7 +36,6 @@ const makeEmailValidatorStub = (): EmailValidatorModel => {
   }
   return new EmailValidatorStub();
 };
-
 const makeSut = (): SutTypes => {
   const authtenticationAccountStub = makeAuthenticationAccountStub();
   const emailValidatorStub = makeEmailValidatorStub();
@@ -125,5 +129,20 @@ describe('AuthenticateAccountController', () => {
     const authSpy = jest.spyOn(authtenticationAccountStub, 'auth');
     await sut.handle(httpRequest);
     expect(authSpy).toHaveBeenCalledWith(httpRequest.body);
+  });
+  test('Should return 401 if invlaid credencials are provided', async () => {
+    const { sut, authenticationAccountStub } = makeSut();
+    const httpRequest = {
+      body: {
+        email: 'invalidEmail@mail.com',
+        password: 'anyPassword',
+      },
+    };
+    jest.spyOn(authenticationAccountStub, 'auth').mockReturnValueOnce(Promise.resolve(null));
+    const httpResponse = await sut.handle(httpRequest);
+    expect(httpResponse).toEqual({
+      statusCode: 401,
+      body: new UnauthorizedError(),
+    });
   });
 });

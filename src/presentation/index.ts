@@ -10,3 +10,4 @@ export * from './errors/missingParamError';
 export * from './errors/invalidParamError';
 export * from './errors/missingParamError';
 export * from './errors/serverError';
+export * from './errors/unauthorizedError';

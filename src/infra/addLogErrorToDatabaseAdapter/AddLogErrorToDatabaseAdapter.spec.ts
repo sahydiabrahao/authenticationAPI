@@ -29,7 +29,6 @@ describe('AddLogErroToDatabaseAdapter', () => {
     const { sut } = makeSut();
     await sut.logError('anyStackError');
     const count = await errorCollection.countDocuments();
-    console.log(count);
     expect(count).toBe(1);
   });
 });
