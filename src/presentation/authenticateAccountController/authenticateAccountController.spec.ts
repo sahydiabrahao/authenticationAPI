@@ -9,24 +9,24 @@ import {
 import { EmailValidatorModel } from '@utils';
 
 import {
-  AuthenticationAccountModel,
-  AuthenticationAccountParamsModel,
-  AuthenticationModel,
+  AuthenticateAccountModel,
+  AuthenticateAccountParamsModel,
+  AuthenticatenModel,
 } from '@domain';
 
 type SutTypes = {
   sut: AuthenticateAccountController;
   emailValidatorStub: EmailValidatorModel;
-  authenticationAccountStub: AuthenticationAccountModel;
+  authenticateAccountStub: AuthenticateAccountModel;
 };
 
-const makeAuthenticationAccountStub = (): AuthenticationAccountModel => {
-  class AuthenticationAccountStub implements AuthenticationAccountModel {
-    async auth(account: AuthenticationAccountParamsModel): Promise<AuthenticationModel> {
+const makeAuthenticatenAccountStub = (): AuthenticateAccountModel => {
+  class AuthenticateAccountStub implements AuthenticateAccountModel {
+    async auth(account: AuthenticateAccountParamsModel): Promise<AuthenticatenModel> {
       return Promise.resolve('anyAccessToken');
     }
   }
-  return new AuthenticationAccountStub();
+  return new AuthenticateAccountStub();
 };
 const makeEmailValidatorStub = (): EmailValidatorModel => {
   class EmailValidatorStub implements EmailValidatorModel {
@@ -37,13 +37,13 @@ const makeEmailValidatorStub = (): EmailValidatorModel => {
   return new EmailValidatorStub();
 };
 const makeSut = (): SutTypes => {
-  const authtenticationAccountStub = makeAuthenticationAccountStub();
+  const authenticateAccountStub = makeAuthenticatenAccountStub();
   const emailValidatorStub = makeEmailValidatorStub();
-  const sut = new AuthenticateAccountController(emailValidatorStub, authtenticationAccountStub);
+  const sut = new AuthenticateAccountController(emailValidatorStub, authenticateAccountStub);
   return {
     sut,
     emailValidatorStub,
-    authenticationAccountStub: authtenticationAccountStub,
+    authenticateAccountStub: authenticateAccountStub,
   };
 };
 
@@ -118,8 +118,8 @@ describe('AuthenticateAccountController', () => {
       body: new ServerError(),
     });
   });
-  test('Should call AuthentitacionAccount with correct values', async () => {
-    const { sut, authenticationAccountStub: authtenticationAccountStub } = makeSut();
+  test('Should call AuthentitacateAccount with correct values', async () => {
+    const { sut, authenticateAccountStub: authtenticationAccountStub } = makeSut();
     const httpRequest = {
       body: {
         email: 'validEmail@mail.com',
@@ -130,15 +130,15 @@ describe('AuthenticateAccountController', () => {
     await sut.handle(httpRequest);
     expect(authSpy).toHaveBeenCalledWith(httpRequest.body);
   });
-  test('Should return 401 if invlaid credencials are provided', async () => {
-    const { sut, authenticationAccountStub } = makeSut();
+  test('Should return 401 if invalid credentials are provided', async () => {
+    const { sut, authenticateAccountStub } = makeSut();
     const httpRequest = {
       body: {
         email: 'invalidEmail@mail.com',
         password: 'anyPassword',
       },
     };
-    jest.spyOn(authenticationAccountStub, 'auth').mockReturnValueOnce(Promise.resolve(null));
+    jest.spyOn(authenticateAccountStub, 'auth').mockReturnValueOnce(Promise.resolve(null));
     const httpResponse = await sut.handle(httpRequest);
     expect(httpResponse).toEqual({
       statusCode: 401,
