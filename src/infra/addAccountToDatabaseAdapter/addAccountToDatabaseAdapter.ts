@@ -2,7 +2,7 @@ import { AddAccountToDatabaseModel } from '@application';
 import { AddAccountParamsModel, AccountModel } from '@domain';
 import { MongoHelper } from '../mongoHelper/mongoHelper';
 
-export class MongoDbAdapter implements AddAccountToDatabaseModel {
+export class AddAccountToDatabaseAdapter implements AddAccountToDatabaseModel {
   async add(account: AddAccountParamsModel): Promise<AccountModel> {
     const accountCollection = await MongoHelper.getCollections('accounts');
     const { insertedId } = await accountCollection.insertOne(account);
