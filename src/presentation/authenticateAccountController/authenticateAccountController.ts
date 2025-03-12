@@ -24,7 +24,7 @@ export class AuthenticateAccountController implements ControllerModel {
       if (!isValid) return { statusCode: 400, body: new InvalidParamError('email') };
       const accessToken = await this.authenticateAccount.auth({ email, password });
       if (!accessToken) return { statusCode: 401, body: new UnauthorizedError() };
-      return { statusCode: 200, body: accessToken };
+      return { statusCode: 200, body: { accessToken } };
     } catch (error) {
       return { statusCode: 500, body: new ServerError() };
     }

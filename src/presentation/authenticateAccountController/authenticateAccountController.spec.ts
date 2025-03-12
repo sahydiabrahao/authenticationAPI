@@ -23,7 +23,7 @@ type SutTypes = {
 const makeAuthenticatenAccountStub = (): AuthenticateAccountModel => {
   class AuthenticateAccountStub implements AuthenticateAccountModel {
     async auth(account: AuthenticateAccountParamsModel): Promise<AuthenticatenModel> {
-      return Promise.resolve('anyAccessToken');
+      return Promise.resolve('validAccessToken');
     }
   }
   return new AuthenticateAccountStub();
@@ -158,6 +158,20 @@ describe('AuthenticateAccountController', () => {
     expect(httpResponse).toEqual({
       statusCode: 500,
       body: new ServerError(),
+    });
+  });
+  test('Should return 200 if valid credentials is provided', async () => {
+    const { sut } = makeSut();
+    const httpRequest = {
+      body: {
+        email: 'validEmail@mail.com',
+        password: 'validPassword',
+      },
+    };
+    const httpResponse = await sut.handle(httpRequest);
+    expect(httpResponse).toEqual({
+      statusCode: 200,
+      body: { accessToken: 'validAccessToken' },
     });
   });
 });
