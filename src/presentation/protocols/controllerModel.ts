@@ -1,5 +1,5 @@
-import { HttpRequestModel, HttpResponseModel } from '@presentation';
+import { ControllerInput, ControllerOutput } from '@presentation';
 
 export interface ControllerModel {
-  handle: (httpRequest: HttpRequestModel) => Promise<HttpResponseModel>;
+  handle: (controllerInput: ControllerInput) => Promise<ControllerOutput>;
 }

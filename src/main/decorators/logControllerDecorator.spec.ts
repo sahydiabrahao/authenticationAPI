@@ -1,6 +1,6 @@
 import { AddLogErrorToDatabaseModel } from '@application';
 import { LogControllerDecorator } from '../decorators/logControllerDecorator';
-import { ControllerModel, HttpRequestModel, HttpResponseModel, ServerError } from '@presentation';
+import { ControllerModel, ControllerInput, ControllerOutput, ServerError } from '@presentation';
 
 class AddLogErrorToDatabaseStub implements AddLogErrorToDatabaseModel {
   async logError(stackError: string): Promise<void> {
@@ -8,15 +8,15 @@ class AddLogErrorToDatabaseStub implements AddLogErrorToDatabaseModel {
   }
 }
 class ControllerStub implements ControllerModel {
-  async handle(httpRequest: HttpRequestModel): Promise<HttpResponseModel> {
-    const httpResponse: HttpResponseModel = {
+  async handle(controllerInput: ControllerInput): Promise<ControllerOutput> {
+    const controllerOutput: ControllerOutput = {
       statusCode: 500,
       body: {
         email: 'anyEmail@mail.com',
         password: 'anyPassword',
       },
     };
-    return Promise.resolve(httpResponse);
+    return Promise.resolve(controllerOutput);
   }
 }
 
@@ -60,8 +60,8 @@ describe('LogController Decorator', () => {
         passwordConfirmation: 'anyPassword',
       },
     };
-    const httpResponse = await sut.handle(request);
-    expect(httpResponse).toEqual({
+    const controllerOutput = await sut.handle(request);
+    expect(controllerOutput).toEqual({
       statusCode: 500,
       body: {
         email: 'anyEmail@mail.com',

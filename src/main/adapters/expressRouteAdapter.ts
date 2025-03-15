@@ -3,11 +3,11 @@ import { Request, Response } from 'express';
 
 export const expressRouteAdapter = (controller: ControllerModel) => {
   return async (req: Request, res: Response) => {
-    const httpResponse = await controller.handle(req);
-    if (httpResponse.statusCode === 200) {
-      res.status(200).json(httpResponse.body);
+    const controllerOutput = await controller.handle(req);
+    if (controllerOutput.statusCode === 200) {
+      res.status(200).json(controllerOutput.body);
     } else {
-      res.status(httpResponse.statusCode).json({ error: httpResponse.body.message });
+      res.status(controllerOutput.statusCode).json({ error: controllerOutput.body.message });
     }
   };
 };

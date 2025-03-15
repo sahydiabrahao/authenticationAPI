@@ -1,5 +1,5 @@
 import { AddAccountToDatabase, AddAccountToDatabaseModel, PasswordHasherModel } from '@application';
-import { AccountModel, AddAccountParamsModel } from '@domain';
+import { AddAccountOutput, AddAccountInput } from '@domain';
 
 type SutTypes = {
   sut: AddAccountToDatabaseModel;
@@ -17,7 +17,7 @@ const makePasswordHasherStub = (): PasswordHasherModel => {
 };
 const makeAddAccountToDatabaseStub = (): AddAccountToDatabaseModel => {
   class AddAccountToDatabaseStub implements AddAccountToDatabaseModel {
-    async add(account: AddAccountParamsModel): Promise<AccountModel> {
+    async add(account: AddAccountInput): Promise<AddAccountOutput> {
       return Promise.resolve({
         id: 'validId',
         email: 'validEmail@mail.com',

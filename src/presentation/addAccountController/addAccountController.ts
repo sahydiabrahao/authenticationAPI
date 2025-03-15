@@ -1,7 +1,7 @@
 import {
   ControllerModel,
-  HttpRequestModel,
-  HttpResponseModel,
+  ControllerInput,
+  ControllerOutput,
   ServerError,
   ValidatorModel,
 } from '@presentation';
@@ -13,11 +13,11 @@ export class AddAccountController implements ControllerModel {
     private readonly validator: ValidatorModel
   ) {}
 
-  async handle(httpRequest: HttpRequestModel): Promise<HttpResponseModel> {
+  async handle(controllerInput: ControllerInput): Promise<ControllerOutput> {
     try {
-      const validatorError = await this.validator.validate(httpRequest.body);
+      const validatorError = await this.validator.validate(controllerInput.body);
       if (validatorError) return { statusCode: 400, body: validatorError };
-      const { email, password } = httpRequest.body;
+      const { email, password } = controllerInput.body;
       const newAccount = await this.addAccount.add({ email, password });
       return { statusCode: 200, body: newAccount };
     } catch (error) {

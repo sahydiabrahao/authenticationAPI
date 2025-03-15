@@ -1,7 +1,7 @@
 export * from './addAccountModel/addAccountModel';
-export * from './addAccountModel/protocols/addAccountParamsModel';
-export * from './addAccountModel/protocols/accountModel';
+export * from './addAccountModel/protocols/addAccountInput';
+export * from './addAccountModel/protocols/accountOutput';
 
 export * from './authenticateAccountModel/authenticateAccountModel';
-export * from './authenticateAccountModel/protocols/authenticateAccountParamsModel';
-export * from './authenticateAccountModel/protocols/authenticateModel';
+export * from './authenticateAccountModel/protocols/authenticateAccountInput';
+export * from './authenticateAccountModel/protocols/authenticateAccountOutput';

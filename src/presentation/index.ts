@@ -1,7 +1,7 @@
 export * from './protocols/controllerModel';
 
-export * from './addAccountController/protocols/httpRequestModel';
-export * from './addAccountController/protocols/httpResponseModel';
+export * from './protocols/controllerInput';
+export * from './protocols/controllerOutput';
 
 export * from './addAccountController/addAccountController';
 export * from './authenticateAccountController/authenticateAccountController';

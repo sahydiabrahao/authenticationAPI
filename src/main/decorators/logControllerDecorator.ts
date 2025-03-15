@@ -1,5 +1,5 @@
 import { AddLogErrorToDatabaseModel } from '@application';
-import { ControllerModel, HttpRequestModel, HttpResponseModel } from '@presentation';
+import { ControllerModel, ControllerInput, ControllerOutput } from '@presentation';
 
 export class LogControllerDecorator implements ControllerModel {
   constructor(
@@ -7,11 +7,11 @@ export class LogControllerDecorator implements ControllerModel {
     private readonly addLogErrorToDatabase: AddLogErrorToDatabaseModel
   ) {}
 
-  async handle(request: HttpRequestModel): Promise<HttpResponseModel> {
-    const httpResponse = await this.controller.handle(request);
-    if (httpResponse.statusCode === 500) {
-      await this.addLogErrorToDatabase.logError(httpResponse.body.stack);
+  async handle(request: ControllerInput): Promise<ControllerOutput> {
+    const controllerOutput = await this.controller.handle(request);
+    if (controllerOutput.statusCode === 500) {
+      await this.addLogErrorToDatabase.logError(controllerOutput.body.stack);
     }
-    return httpResponse;
+    return controllerOutput;
   }
 }
