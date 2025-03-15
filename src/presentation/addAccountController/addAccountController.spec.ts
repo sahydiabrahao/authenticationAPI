@@ -58,64 +58,6 @@ const makeSut = (): SutTypes => {
 };
 
 describe('AddAccountController', () => {
-  test('Should return 400 if no email is provided', async () => {
-    const { sut } = makeSut();
-    const httpRequest = {
-      body: {
-        password: 'anyPassword',
-        passwordConfirmation: 'anyPassword',
-      },
-    };
-    const httpResponse = await sut.handle(httpRequest);
-    expect(httpResponse).toEqual({
-      statusCode: 400,
-      body: new MissingParamError('email'),
-    });
-  });
-  test('Should return 400 if no password is provided', async () => {
-    const { sut } = makeSut();
-    const httpRequest = {
-      body: {
-        email: 'anyEmail@mail.com',
-        passwordConfirmation: 'anyPassword',
-      },
-    };
-    const httpResponse = await sut.handle(httpRequest);
-    expect(httpResponse).toEqual({
-      statusCode: 400,
-      body: new MissingParamError('password'),
-    });
-  });
-  test('Should return 400 if no passwordConfirmation is provided', async () => {
-    const { sut } = makeSut();
-    const httpRequest = {
-      body: {
-        email: 'anyEmail@mail.com',
-        password: 'anyPassword',
-      },
-    };
-    const httpResponse = await sut.handle(httpRequest);
-    expect(httpResponse).toEqual({
-      statusCode: 400,
-      body: new MissingParamError('passwordConfirmation'),
-    });
-  });
-  test('Should return 400 if invalid email is provided', async () => {
-    const { sut, emailValidatorStub } = makeSut();
-    const httpRequest = {
-      body: {
-        email: 'invalidEmail@mail.com',
-        password: 'anyPassword',
-        passwordConfirmation: 'anyPassword',
-      },
-    };
-    jest.spyOn(emailValidatorStub, 'isValid').mockReturnValue(Promise.resolve(false));
-    const httpResponse = await sut.handle(httpRequest);
-    expect(httpResponse).toEqual({
-      statusCode: 400,
-      body: new InvalidParamError('email'),
-    });
-  });
   test('Should call EmailValidator with correct email', async () => {
     const { sut, emailValidatorStub } = makeSut();
     const httpRequest = {

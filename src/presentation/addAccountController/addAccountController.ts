@@ -3,7 +3,6 @@ import {
   HttpRequestModel,
   HttpResponseModel,
   InvalidParamError,
-  MissingParamError,
   ServerError,
   ValidatorModel,
 } from '@presentation';
@@ -21,11 +20,6 @@ export class AddAccountController implements ControllerModel {
     try {
       const validatorError = this.validator.validate(httpRequest);
       if (validatorError) return { statusCode: 400, body: validatorError };
-      const requiredFields = ['email', 'password', 'passwordConfirmation'];
-      for (const field of requiredFields) {
-        if (!httpRequest.body[field])
-          return { statusCode: 400, body: new MissingParamError(field) };
-      }
       const { email, password, passwordConfirmation } = httpRequest.body;
       const isValid = await this.emailValidator.isValid(email);
       if (!isValid) return { statusCode: 400, body: new InvalidParamError('email') };
