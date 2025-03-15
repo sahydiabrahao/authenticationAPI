@@ -17,4 +17,9 @@ describe('RequiredFieldValidator', () => {
     const output = sut.validate({ anotherField: 'anotherField' });
     expect(output).toEqual(new MissingParamError('anyField'));
   });
+  test('Should return null if validation success', () => {
+    const { sut } = makeSut();
+    const output = sut.validate({ anyField: 'anyField' });
+    expect(output).toEqual(null);
+  });
 });
