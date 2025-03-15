@@ -6,7 +6,7 @@ import {
 } from '@infra';
 import { AddAccountController, ControllerModel } from '@presentation';
 import { EmailValidatorAdapter } from '@utils';
-import { LogControllerDecorator } from '../decorators/logControllerDecorator';
+import { LogControllerDecorator } from '../../decorators/logControllerDecorator';
 import { AddAccountValidatorFactory } from './addAccountValidatorFactory';
 
 export const addAccountControllerFactory = (): ControllerModel => {

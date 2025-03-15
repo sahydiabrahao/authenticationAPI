@@ -38,8 +38,8 @@ const makeSut = (): SutTypes => {
   const sut = new AddAccountController(addAccountStub, validatorStub);
   return {
     sut,
-    validatorStub,
     addAccountStub,
+    validatorStub,
   };
 };
 

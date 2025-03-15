@@ -15,7 +15,7 @@ export class AddAccountController implements ControllerModel {
 
   async handle(controllerInput: ControllerInput): Promise<ControllerOutput> {
     try {
-      const validatorError = await this.validator.validate(controllerInput.body);
+      const validatorError = this.validator.validate(controllerInput.body);
       if (validatorError) return { statusCode: 400, body: validatorError };
       const { email, password } = controllerInput.body;
       const newAccount = await this.addAccount.add({ email, password });

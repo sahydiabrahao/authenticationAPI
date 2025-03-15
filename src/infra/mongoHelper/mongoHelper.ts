@@ -11,8 +11,10 @@ export const MongoHelper = {
   },
 
   async disconnect() {
-    if (this.mongoDbConnection) await this.mongoDbConnection.close();
-    this.mongoDbConnection = null;
+    if (this.mongoDbConnection) {
+      await this.mongoDbConnection.close();
+      this.mongoDbConnection = null;
+    }
   },
 
   getConnection() {

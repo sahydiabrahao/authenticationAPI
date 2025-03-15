@@ -3,25 +3,21 @@ import {
   ControllerModel,
   ControllerInput,
   ControllerOutput,
-  InvalidParamError,
-  MissingParamError,
   ServerError,
   UnauthorizedError,
+  ValidatorModel,
 } from '@presentation';
-import { EmailValidatorModel } from '@utils';
 
 export class AuthenticateAccountController implements ControllerModel {
   constructor(
-    private readonly emailValidator: EmailValidatorModel,
-    private readonly authenticateAccount: AuthenticateAccountModel
+    private readonly authenticateAccount: AuthenticateAccountModel,
+    private readonly validator: ValidatorModel
   ) {}
   async handle(controllerInput: ControllerInput): Promise<ControllerOutput> {
     try {
+      const validatorError = this.validator.validate(controllerInput.body);
+      if (validatorError) return { statusCode: 400, body: validatorError };
       const { email, password } = controllerInput.body;
-      if (!email) return { statusCode: 400, body: new MissingParamError('email') };
-      if (!password) return { statusCode: 400, body: new MissingParamError('password') };
-      const isValid = await this.emailValidator.isValid(email);
-      if (!isValid) return { statusCode: 400, body: new InvalidParamError('email') };
       const accessToken = await this.authenticateAccount.auth({ email, password });
       if (!accessToken) return { statusCode: 401, body: new UnauthorizedError() };
       return { statusCode: 200, body: { accessToken } };

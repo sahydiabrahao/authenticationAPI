@@ -17,4 +17,8 @@ describe('MongoHelper', () => {
     accountCollection = await sut.getCollections('accounts');
     expect(accountCollection).toBeTruthy();
   });
+  test('Should throw an error if getConnection is called without a connection', async () => {
+    await MongoHelper.disconnect();
+    expect(() => MongoHelper.getConnection()).toThrow('No MongoDB connection');
+  });
 });
