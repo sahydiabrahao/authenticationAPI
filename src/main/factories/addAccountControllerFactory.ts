@@ -17,9 +17,7 @@ export const addAccountControllerFactory = (): ControllerModel => {
     passwordHasherAdapter,
     addAccountToDatabaseAdapter
   );
-  const emailValidator = new EmailValidatorAdapter();
   const addAccountController = new AddAccountController(
-    emailValidator,
     addAccountToDatabase,
     AddAccountValidatorFactory()
   );

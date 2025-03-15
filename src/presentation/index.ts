@@ -12,6 +12,7 @@ export * from './validator/protocols/validatorModel';
 export * from './validator/validatorComposite';
 export * from './validator/requiredFieldValidator';
 export * from './validator/compareFieldValidator';
+export * from './validator/emailValidator';
 
 export * from './errors/missingParamError';
 export * from './errors/invalidParamError';

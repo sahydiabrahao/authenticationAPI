@@ -1,10 +1,21 @@
 import { AddAccountValidatorFactory } from './addAccountValidatorFactory';
 import {
   CompareFieldValidator,
+  EmailValidator,
   RequiredFieldValidator,
   ValidatorComposite,
   ValidatorModel,
 } from '@presentation';
+import { EmailValidatorModel } from '@utils';
+
+const makeEmailValidatorStub = (): EmailValidatorModel => {
+  class EmailValidatorStub implements EmailValidatorModel {
+    async isValid(email: string): Promise<boolean> {
+      return Promise.resolve(true);
+    }
+  }
+  return new EmailValidatorStub();
+};
 
 jest.mock('@presentation/validators/validatorComposite', () => {
   const actual = jest.requireActual('@presentation/validators/validatorComposite');
@@ -22,6 +33,7 @@ describe('AddAccountValidatorFactory', () => {
     const requiredFields = ['email', 'password', 'passwordConfirmation'];
     for (const field of requiredFields) validators.push(new RequiredFieldValidator(field));
     validators.push(new CompareFieldValidator('password', 'passwordConfirmation'));
+    validators.push(new EmailValidator('email', makeEmailValidatorStub()));
     expect(ValidatorComposite).toHaveBeenCalledWith(validators);
   });
 });

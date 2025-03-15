@@ -2,8 +2,8 @@ import { MissingParamError, ValidatorInput, ValidatorModel, ValidatorOutput } fr
 
 export class RequiredFieldValidator implements ValidatorModel {
   constructor(private readonly fieldName: string) {}
-  validate(input: ValidatorInput): ValidatorOutput {
-    if (!input[this.fieldName]) return new MissingParamError(this.fieldName);
-    return null;
+  async validate(input: ValidatorInput): ValidatorOutput {
+    if (!input[this.fieldName]) return Promise.resolve(new MissingParamError(this.fieldName));
+    return Promise.resolve(null);
   }
 }
