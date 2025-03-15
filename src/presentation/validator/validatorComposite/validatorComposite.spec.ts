@@ -33,4 +33,9 @@ describe('ValidatorComposite', () => {
     const output = sut.validate({ anyField: 'anyValue' });
     expect(output).toEqual(new MissingParamError('anyField'));
   });
+  test('Should return null if validation success', () => {
+    const { sut } = makeSut();
+    const output = sut.validate({ anyField: 'anyValue' });
+    expect(output).toEqual(null);
+  });
 });
