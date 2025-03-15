@@ -1,12 +1,12 @@
-import { AddLogErroToDatabaseAdapter, MongoHelper } from '@infra';
+import { AddLogErrorToDatabaseAdapter, MongoHelper } from '@infra';
 import { Collection } from 'mongodb';
 
 type SutTypes = {
-  sut: AddLogErroToDatabaseAdapter;
+  sut: AddLogErrorToDatabaseAdapter;
 };
 
 const makeSut = (): SutTypes => {
-  const sut = new AddLogErroToDatabaseAdapter();
+  const sut = new AddLogErrorToDatabaseAdapter();
   return { sut };
 };
 

@@ -1,12 +1,13 @@
 import { AddAccountToDatabase } from '@application';
 import {
-  AddLogErroToDatabaseAdapter,
+  AddLogErrorToDatabaseAdapter,
   PasswordHasherAdapter,
   AddAccountToDatabaseAdapter,
 } from '@infra';
 import { AddAccountController, ControllerModel } from '@presentation';
 import { EmailValidatorAdapter } from '@utils';
 import { LogControllerDecorator } from '../decorators/logControllerDecorator';
+import { AddAccountValidatorFactory } from './addAccountValidatorFactory';
 
 export const addAccountControllerFactory = (): ControllerModel => {
   const SALT = 12;
@@ -17,7 +18,11 @@ export const addAccountControllerFactory = (): ControllerModel => {
     addAccountToDatabaseAdapter
   );
   const emailValidator = new EmailValidatorAdapter();
-  const addAccountController = new AddAccountController(emailValidator, addAccountToDatabase);
-  const addLogErroToDatabaseAdapter = new AddLogErroToDatabaseAdapter();
-  return new LogControllerDecorator(addAccountController, addLogErroToDatabaseAdapter);
+  const addAccountController = new AddAccountController(
+    emailValidator,
+    addAccountToDatabase,
+    AddAccountValidatorFactory()
+  );
+  const addLogErrorToDatabaseAdapter = new AddLogErrorToDatabaseAdapter();
+  return new LogControllerDecorator(addAccountController, addLogErrorToDatabaseAdapter);
 };

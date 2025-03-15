@@ -5,5 +5,6 @@ export * from './middlewares/bodyParser/bodyParser';
 export * from './middlewares/cors/cors';
 export * from './middlewares/contentType/contentType';
 export * from './factories/addAccountControllerFactory';
+export * from './factories/addAccountValidatorFactory';
 export * from './adapters/expressRouteAdapter';
 export * from './decorators/logControllerDecorator';

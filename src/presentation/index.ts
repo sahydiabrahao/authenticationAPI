@@ -9,6 +9,8 @@ export * from './authenticateAccountController/authenticateAccountController';
 export * from './validator/protocols/validatorInput';
 export * from './validator/protocols/validatorOutput';
 export * from './validator/protocols/validatorModel';
+export * from './validator/validatorComposite';
+export * from './validator/requiredFieldValidator';
 
 export * from './errors/missingParamError';
 export * from './errors/invalidParamError';

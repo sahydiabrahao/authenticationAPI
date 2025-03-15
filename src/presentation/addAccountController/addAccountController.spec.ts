@@ -19,7 +19,7 @@ type SutTypes = {
 
 const makeValidateAccountStub = (): ValidatorModel => {
   class ValidateAccountStub implements ValidatorModel {
-    validate(account: ValidatorInput): ValidatorOutput {
+    validate(input: ValidatorInput): ValidatorOutput {
       return null;
     }
   }
@@ -162,7 +162,7 @@ describe('AddAccountController', () => {
 
     const validateSpy = jest.spyOn(validatorStub, 'validate');
     await sut.handle(httpRequest);
-    expect(validateSpy).toHaveBeenCalledWith(httpRequest);
+    expect(validateSpy).toHaveBeenCalledWith(httpRequest.body);
   });
   test('Should return 400 if Validator throws an error', async () => {
     const { sut, validatorStub } = makeSut();
