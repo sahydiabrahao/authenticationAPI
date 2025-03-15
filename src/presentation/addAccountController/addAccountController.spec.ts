@@ -3,6 +3,9 @@ import {
   InvalidParamError,
   AddAccountController,
   ServerError,
+  ValidatorInput,
+  ValidatorOutput,
+  ValidatorModel,
 } from '@presentation';
 import { AccountModel, AddAccountModel, AddAccountParamsModel } from '@domain';
 import { EmailValidatorModel } from '@utils';
@@ -10,7 +13,17 @@ import { EmailValidatorModel } from '@utils';
 type SutTypes = {
   sut: AddAccountController;
   emailValidatorStub: EmailValidatorModel;
+  validatorStub: ValidatorModel;
   addAccountStub: AddAccountModel;
+};
+
+const makeValidateAccountStub = (): ValidatorModel => {
+  class ValidateAccountStub implements ValidatorModel {
+    validate(account: ValidatorInput): ValidatorOutput {
+      return null;
+    }
+  }
+  return new ValidateAccountStub();
 };
 
 const makeAddAccountStub = (): AddAccountModel => {
@@ -33,10 +46,13 @@ const makeEmailValidatorStub = (): EmailValidatorModel => {
 const makeSut = (): SutTypes => {
   const addAccountStub = makeAddAccountStub();
   const emailValidatorStub = makeEmailValidatorStub();
-  const sut = new AddAccountController(emailValidatorStub, addAccountStub);
+  const validatorStub = makeValidateAccountStub();
+  const sut = new AddAccountController(emailValidatorStub, addAccountStub, validatorStub);
   return {
     sut,
     emailValidatorStub,
+
+    validatorStub,
     addAccountStub,
   };
 };
@@ -191,5 +207,19 @@ describe('AddAccountController', () => {
       statusCode: 200,
       body: { id: 'validId', email: 'validEmail@mail.com', password: 'validPassword' },
     });
+  });
+  test('Should call Validator with correct values', async () => {
+    const { sut, validatorStub } = makeSut();
+    const httpRequest = {
+      body: {
+        email: 'validEmail@mail.com',
+        password: 'validPassword',
+        passwordConfirmation: 'validPassword',
+      },
+    };
+
+    const validateSpy = jest.spyOn(validatorStub, 'validate');
+    await sut.handle(httpRequest);
+    expect(validateSpy).toHaveBeenCalledWith(httpRequest);
   });
 });

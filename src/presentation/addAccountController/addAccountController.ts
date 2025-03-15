@@ -5,6 +5,7 @@ import {
   InvalidParamError,
   MissingParamError,
   ServerError,
+  ValidatorModel,
 } from '@presentation';
 import { EmailValidatorModel } from '@utils';
 import { AddAccountModel } from '@domain';
@@ -12,11 +13,14 @@ import { AddAccountModel } from '@domain';
 export class AddAccountController implements ControllerModel {
   constructor(
     private readonly emailValidator: EmailValidatorModel,
-    private readonly addAccount: AddAccountModel
+    private readonly addAccount: AddAccountModel,
+    private readonly validator: ValidatorModel
   ) {}
 
   async handle(httpRequest: HttpRequestModel): Promise<HttpResponseModel> {
     try {
+      const validator = this.validator.validate(httpRequest);
+
       const requiredFields = ['email', 'password', 'passwordConfirmation'];
       for (const field of requiredFields) {
         if (!httpRequest.body[field])

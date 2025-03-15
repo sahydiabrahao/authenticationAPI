@@ -6,6 +6,10 @@ export * from './addAccountController/protocols/httpResponseModel';
 export * from './addAccountController/addAccountController';
 export * from './authenticateAccountController/authenticateAccountController';
 
+export * from './validator/protocols/validatorInput';
+export * from './validator/protocols/validatorOutput';
+export * from './validator/protocols/validatorModel';
+
 export * from './errors/missingParamError';
 export * from './errors/invalidParamError';
 export * from './errors/missingParamError';
