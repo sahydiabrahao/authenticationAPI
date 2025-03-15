@@ -222,4 +222,20 @@ describe('AddAccountController', () => {
     await sut.handle(httpRequest);
     expect(validateSpy).toHaveBeenCalledWith(httpRequest);
   });
+  test('Should return 400 if Validator throws an error', async () => {
+    const { sut, validatorStub } = makeSut();
+    const httpRequest = {
+      body: {
+        email: 'validEmail@mail.com',
+        password: 'validPassword',
+        passwordConfirmation: 'validPassword',
+      },
+    };
+    jest.spyOn(validatorStub, 'validate').mockReturnValueOnce(new MissingParamError('anyField'));
+    const httpResponse = await sut.handle(httpRequest);
+    expect(httpResponse).toEqual({
+      statusCode: 400,
+      body: new MissingParamError('anyField'),
+    });
+  });
 });

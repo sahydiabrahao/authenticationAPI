@@ -19,8 +19,8 @@ export class AddAccountController implements ControllerModel {
 
   async handle(httpRequest: HttpRequestModel): Promise<HttpResponseModel> {
     try {
-      const validator = this.validator.validate(httpRequest);
-
+      const validatorError = this.validator.validate(httpRequest);
+      if (validatorError) return { statusCode: 400, body: validatorError };
       const requiredFields = ['email', 'password', 'passwordConfirmation'];
       for (const field of requiredFields) {
         if (!httpRequest.body[field])
