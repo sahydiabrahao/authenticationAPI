@@ -22,9 +22,9 @@ describe('CompareFieldValidator', () => {
     const output = sut.validate({ anyField: 'anyValue', anyFieldToCompare: 'wrongValue' });
     expect(output).toEqual(new InvalidParamError('anyFieldToCompare'));
   });
-  // test('Should return null if validation success', () => {
-  //   const { sut } = makeSut();
-  //   const output = sut.validate({ anyField: 'anyValue', anyFieldToCompare: 'anyValue' });
-  //   expect(output).toEqual(null);
-  // });
+  test('Should return null if validation success', () => {
+    const { sut } = makeSut();
+    const output = sut.validate({ anyField: 'anyValue', anyFieldToCompare: 'anyValue' });
+    expect(output).toEqual(null);
+  });
 });
