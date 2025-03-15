@@ -1,6 +1,5 @@
 import {
   AuthenticateAccountController,
-  HttpResponseModel,
   InvalidParamError,
   MissingParamError,
   ServerError,
@@ -11,7 +10,7 @@ import { EmailValidatorModel } from '@utils';
 import {
   AuthenticateAccountModel,
   AuthenticateAccountParamsModel,
-  AuthenticatenModel,
+  AuthenticateModel,
 } from '@domain';
 
 type SutTypes = {
@@ -20,9 +19,9 @@ type SutTypes = {
   authenticateAccountStub: AuthenticateAccountModel;
 };
 
-const makeAuthenticatenAccountStub = (): AuthenticateAccountModel => {
+const makeAuthenticateAccountStub = (): AuthenticateAccountModel => {
   class AuthenticateAccountStub implements AuthenticateAccountModel {
-    async auth(account: AuthenticateAccountParamsModel): Promise<AuthenticatenModel> {
+    async auth(account: AuthenticateAccountParamsModel): Promise<AuthenticateModel> {
       return Promise.resolve('validAccessToken');
     }
   }
@@ -30,14 +29,14 @@ const makeAuthenticatenAccountStub = (): AuthenticateAccountModel => {
 };
 const makeEmailValidatorStub = (): EmailValidatorModel => {
   class EmailValidatorStub implements EmailValidatorModel {
-    async isValid(email: string): Promise<boolean> {
-      return Promise.resolve(true);
+    isValid(email: string): boolean {
+      return true;
     }
   }
   return new EmailValidatorStub();
 };
 const makeSut = (): SutTypes => {
-  const authenticateAccountStub = makeAuthenticatenAccountStub();
+  const authenticateAccountStub = makeAuthenticateAccountStub();
   const emailValidatorStub = makeEmailValidatorStub();
   const sut = new AuthenticateAccountController(emailValidatorStub, authenticateAccountStub);
   return {
@@ -95,7 +94,7 @@ describe('AuthenticateAccountController', () => {
         password: 'anyPassword',
       },
     };
-    jest.spyOn(emailValidatorStub, 'isValid').mockReturnValue(Promise.resolve(false));
+    jest.spyOn(emailValidatorStub, 'isValid').mockReturnValue(false);
     const httpResponse = await sut.handle(httpRequest);
     expect(httpResponse).toEqual({
       statusCode: 400,
@@ -111,7 +110,9 @@ describe('AuthenticateAccountController', () => {
         passwordConfirmation: 'anyPassword',
       },
     };
-    jest.spyOn(emailValidatorStub, 'isValid').mockReturnValueOnce(Promise.reject(new Error()));
+    jest.spyOn(emailValidatorStub, 'isValid').mockImplementationOnce(() => {
+      throw new Error();
+    });
     const httpResponse = await sut.handle(httpRequest);
     expect(httpResponse).toEqual({
       statusCode: 500,

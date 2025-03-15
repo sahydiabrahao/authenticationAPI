@@ -17,7 +17,7 @@ type SutTypes = {
 const makeValidateAccountStub = (): ValidatorModel => {
   class ValidateAccountStub implements ValidatorModel {
     validate(input: ValidatorInput): ValidatorOutput {
-      return Promise.resolve(null);
+      return null;
     }
   }
   return new ValidateAccountStub();
@@ -115,9 +115,7 @@ describe('AddAccountController', () => {
         passwordConfirmation: 'validPassword',
       },
     };
-    jest
-      .spyOn(validatorStub, 'validate')
-      .mockReturnValueOnce(Promise.resolve(new MissingParamError('anyField')));
+    jest.spyOn(validatorStub, 'validate').mockReturnValueOnce(new MissingParamError('anyField'));
     const httpResponse = await sut.handle(httpRequest);
     expect(httpResponse).toEqual({
       statusCode: 400,

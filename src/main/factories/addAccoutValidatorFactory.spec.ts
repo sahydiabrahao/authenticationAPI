@@ -10,8 +10,8 @@ import { EmailValidatorModel } from '@utils';
 
 const makeEmailValidatorStub = (): EmailValidatorModel => {
   class EmailValidatorStub implements EmailValidatorModel {
-    async isValid(email: string): Promise<boolean> {
-      return Promise.resolve(true);
+    isValid(email: string): boolean {
+      return true;
     }
   }
   return new EmailValidatorStub();

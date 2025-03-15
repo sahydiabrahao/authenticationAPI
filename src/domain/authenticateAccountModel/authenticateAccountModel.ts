@@ -1,5 +1,5 @@
-import { AuthenticateAccountParamsModel, AuthenticatenModel } from '@domain';
+import { AuthenticateAccountParamsModel, AuthenticateModel } from '@domain';
 
 export interface AuthenticateAccountModel {
-  auth(account: AuthenticateAccountParamsModel): Promise<AuthenticatenModel>;
+  auth(account: AuthenticateAccountParamsModel): Promise<AuthenticateModel>;
 }

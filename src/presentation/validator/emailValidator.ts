@@ -6,8 +6,8 @@ export class EmailValidator implements ValidatorModel {
     private readonly fieldName: string,
     private readonly emailValidator: EmailValidatorModel
   ) {}
-  async validate(input: ValidatorInput): ValidatorOutput {
-    const isValid = await this.emailValidator.isValid(input[this.fieldName]);
+  validate(input: ValidatorInput): ValidatorOutput {
+    const isValid = this.emailValidator.isValid(input[this.fieldName]);
     if (!isValid) return new InvalidParamError(this.fieldName);
     return null;
   }

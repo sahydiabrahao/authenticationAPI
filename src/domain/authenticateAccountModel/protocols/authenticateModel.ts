@@ -1,1 +1,1 @@
-export type AuthenticatenModel = string | null;
+export type AuthenticateModel = string | null;

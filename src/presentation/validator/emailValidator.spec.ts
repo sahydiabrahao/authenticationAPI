@@ -3,8 +3,8 @@ import { EmailValidatorModel } from '@utils';
 
 const makeEmailValidatorStub = (): EmailValidatorModel => {
   class EmailValidatorStub implements EmailValidatorModel {
-    async isValid(email: string): Promise<boolean> {
-      return Promise.resolve(true);
+    isValid(email: string): boolean {
+      return true;
     }
   }
   return new EmailValidatorStub();
@@ -25,26 +25,23 @@ const makeSut = (): SutTypes => {
 };
 
 describe('EmailValidator', () => {
-  test('Should return error if EmailValidatorAdapter return false', async () => {
+  test('Should return error if EmailValidatorAdapter return false', () => {
     const { sut, emailValidatorAdapterStub } = makeSut();
-    jest.spyOn(emailValidatorAdapterStub, 'isValid').mockReturnValueOnce(Promise.resolve(false));
-    const error = await sut.validate({ email: 'anyEmail@mail.com' });
+    jest.spyOn(emailValidatorAdapterStub, 'isValid').mockReturnValueOnce(false);
+    const error = sut.validate({ email: 'anyEmail@mail.com' });
     expect(error).toEqual(new InvalidParamError('email'));
   });
-  test('Should call EmailValidatorAdapter with correct email', async () => {
+  test('Should call EmailValidatorAdapter with correct email', () => {
     const { sut, emailValidatorAdapterStub } = makeSut();
     const isValidSpy = jest.spyOn(emailValidatorAdapterStub, 'isValid');
     sut.validate({ email: 'anyEmail@mail.com' });
     expect(isValidSpy).toHaveBeenCalledWith('anyEmail@mail.com');
   });
-  test('Should throws if EmailValidator throws an error', async () => {
+  test('Should throws if EmailValidator throws an error', () => {
     const { sut, emailValidatorAdapterStub } = makeSut();
-    jest
-      .spyOn(emailValidatorAdapterStub, 'isValid')
-      .mockReturnValueOnce(Promise.reject(new Error()));
-
-    const promise = sut.validate({ email: 'anyEmail@mail.com' });
-
-    expect(promise).rejects.toThrow();
+    jest.spyOn(emailValidatorAdapterStub, 'isValid').mockImplementationOnce(() => {
+      throw new Error();
+    });
+    expect(() => sut.validate({ email: 'anyEmail@mail.com' })).toThrow();
   });
 });
