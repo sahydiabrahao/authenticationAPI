@@ -1,5 +1,10 @@
 import { AddAccountValidatorFactory } from './addAccountValidatorFactory';
-import { RequiredFieldValidator, ValidatorComposite, ValidatorModel } from '@presentation';
+import {
+  CompareFieldValidator,
+  RequiredFieldValidator,
+  ValidatorComposite,
+  ValidatorModel,
+} from '@presentation';
 
 jest.mock('@presentation/validators/validatorComposite', () => {
   const actual = jest.requireActual('@presentation/validators/validatorComposite');
@@ -16,6 +21,7 @@ describe('AddAccountValidatorFactory', () => {
     const validators: ValidatorModel[] = [];
     const requiredFields = ['email', 'password', 'passwordConfirmation'];
     for (const field of requiredFields) validators.push(new RequiredFieldValidator(field));
+    validators.push(new CompareFieldValidator('password', 'passwordConfirmation'));
     expect(ValidatorComposite).toHaveBeenCalledWith(validators);
   });
 });

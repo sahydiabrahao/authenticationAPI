@@ -87,21 +87,6 @@ describe('AddAccountController', () => {
       body: new ServerError(),
     });
   });
-  test('Should return 400 if the password does not match the password confirmation', async () => {
-    const { sut } = makeSut();
-    const httpRequest = {
-      body: {
-        email: 'anyEmail@mail.com',
-        password: 'anyPassword',
-        passwordConfirmation: 'invalidPassword',
-      },
-    };
-    const httpResponse = await sut.handle(httpRequest);
-    expect(httpResponse).toEqual({
-      statusCode: 400,
-      body: new InvalidParamError('passwordConfirmation'),
-    });
-  });
   test('Should call AddAccount with correct values', async () => {
     const { sut, addAccountStub } = makeSut();
     const httpRequest = {

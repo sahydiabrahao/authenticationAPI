@@ -20,11 +20,9 @@ export class AddAccountController implements ControllerModel {
     try {
       const validatorError = this.validator.validate(httpRequest.body);
       if (validatorError) return { statusCode: 400, body: validatorError };
-      const { email, password, passwordConfirmation } = httpRequest.body;
+      const { email, password } = httpRequest.body;
       const isValid = await this.emailValidator.isValid(email);
       if (!isValid) return { statusCode: 400, body: new InvalidParamError('email') };
-      if (password !== passwordConfirmation)
-        return { statusCode: 400, body: new InvalidParamError('passwordConfirmation') };
       const newAccount = await this.addAccount.add({ email, password });
       return { statusCode: 200, body: newAccount };
     } catch (error) {
