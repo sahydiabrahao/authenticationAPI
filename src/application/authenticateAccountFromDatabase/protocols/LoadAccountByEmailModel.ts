@@ -4,10 +4,6 @@ export type LoadAccountByEmailOutput = {
   password: string;
 } | null;
 
-export interface LoadAccountByEmailInput {
-  email: string;
-}
-
 export interface LoadAccountByEmailModel {
-  load(email: LoadAccountByEmailInput): Promise<LoadAccountByEmailOutput>;
+  load(email: string): Promise<LoadAccountByEmailOutput>;
 }

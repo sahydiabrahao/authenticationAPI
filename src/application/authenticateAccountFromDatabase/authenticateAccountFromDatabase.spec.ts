@@ -1,15 +1,22 @@
 import {
   AuthenticateAccountFromDatabase,
-  HashComparerInput,
   HashComparerModel,
-  LoadAccountByEmailInput,
   LoadAccountByEmailModel,
   LoadAccountByEmailOutput,
+  TokenGeneratorModel,
 } from '@application';
 
+const makeTokenGeneratorStub = (): TokenGeneratorModel => {
+  class TokenGeneratorStub implements TokenGeneratorModel {
+    async generate(id: string): Promise<string> {
+      return Promise.resolve('anyToken');
+    }
+  }
+  return new TokenGeneratorStub();
+};
 const makeHashComparerStub = (): HashComparerModel => {
   class HashComparerModelStub implements HashComparerModel {
-    async compare(params: HashComparerInput): Promise<boolean> {
+    async compare(value: string, hash: string): Promise<boolean> {
       return Promise.resolve(true);
     }
   }
@@ -18,9 +25,9 @@ const makeHashComparerStub = (): HashComparerModel => {
 
 const makeLoadAccountByEmailStub = (): LoadAccountByEmailModel => {
   class LoadAccountByEmailStub implements LoadAccountByEmailModel {
-    async load(email: LoadAccountByEmailInput): Promise<LoadAccountByEmailOutput> {
+    async load(email: string): Promise<LoadAccountByEmailOutput> {
       return Promise.resolve({
-        id: 'anyID',
+        id: 'anyId',
         email: 'anyEmail@mail.com',
         password: 'hashedPassword',
       });
@@ -33,16 +40,23 @@ type SutTypes = {
   sut: AuthenticateAccountFromDatabase;
   loadAccountByEmailStub: LoadAccountByEmailModel;
   hashComparerStub: HashComparerModel;
+  tokenGeneratorStub: TokenGeneratorModel;
 };
 
 const makeSut = (): SutTypes => {
+  const tokenGeneratorStub = makeTokenGeneratorStub();
   const hashComparerStub = makeHashComparerStub();
   const loadAccountByEmailStub = makeLoadAccountByEmailStub();
-  const sut = new AuthenticateAccountFromDatabase(loadAccountByEmailStub, hashComparerStub);
+  const sut = new AuthenticateAccountFromDatabase(
+    loadAccountByEmailStub,
+    hashComparerStub,
+    tokenGeneratorStub
+  );
   return {
     sut,
     loadAccountByEmailStub,
     hashComparerStub,
+    tokenGeneratorStub,
   };
 };
 
@@ -54,7 +68,7 @@ describe('AuthenticateAccountFromDatabase', () => {
       email: 'anyEmail@mail.com',
       password: 'anyPassword',
     });
-    expect(loadSpy).toHaveBeenCalledWith({ email: 'anyEmail@mail.com' });
+    expect(loadSpy).toHaveBeenCalledWith('anyEmail@mail.com');
   });
   test('Should throws if LoadAccountByEmail throw an error', async () => {
     const { sut, loadAccountByEmailStub } = makeSut();
@@ -81,10 +95,7 @@ describe('AuthenticateAccountFromDatabase', () => {
       email: 'anyEmail@mail.com',
       password: 'anyPassword',
     });
-    expect(compareSpy).toHaveBeenCalledWith({
-      value: 'anyPassword',
-      hash: 'hashedPassword',
-    });
+    expect(compareSpy).toHaveBeenCalledWith('anyPassword', 'hashedPassword');
   });
   test('Should throws if HashedComparer throw an error', async () => {
     const { sut, hashComparerStub } = makeSut();
@@ -103,5 +114,14 @@ describe('AuthenticateAccountFromDatabase', () => {
       password: 'anyPassword',
     });
     expect(accessToken).toEqual(null);
+  });
+  test('Should call TokenGenerator with correct id', async () => {
+    const { sut, tokenGeneratorStub } = makeSut();
+    const generateSpy = jest.spyOn(tokenGeneratorStub, 'generate');
+    await sut.auth({
+      email: 'anyEmail@mail.com',
+      password: 'anyPassword',
+    });
+    expect(generateSpy).toHaveBeenCalledWith('anyId');
   });
 });

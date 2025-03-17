@@ -1,8 +1,3 @@
-export interface HashComparerInput {
-  value: string;
-  hash: string;
-}
-
 export interface HashComparerModel {
-  compare(passwords: HashComparerInput): Promise<boolean>;
+  compare(value: string, hash: string): Promise<boolean>;
 }
