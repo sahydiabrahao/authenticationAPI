@@ -95,4 +95,13 @@ describe('AuthenticateAccountFromDatabase', () => {
     });
     expect(promise).rejects.toThrow();
   });
+  test('Should return null if HashedComparer returns false', async () => {
+    const { sut, hashComparerStub } = makeSut();
+    jest.spyOn(hashComparerStub, 'compare').mockReturnValueOnce(Promise.resolve(false));
+    const accessToken = await sut.auth({
+      email: 'anyEmail@mail.com',
+      password: 'anyPassword',
+    });
+    expect(accessToken).toEqual(null);
+  });
 });
