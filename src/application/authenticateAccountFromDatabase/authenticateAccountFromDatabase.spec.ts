@@ -47,4 +47,13 @@ describe('AuthenticateAccountFromDatabase', () => {
     });
     expect(promise).rejects.toThrow();
   });
+  test('Should return null if LoadAccountByEmail returns null', async () => {
+    const { sut, loadAccountByEmailStub } = makeSut();
+    jest.spyOn(loadAccountByEmailStub, 'load').mockReturnValueOnce(Promise.resolve(null));
+    const accessToken = await sut.auth({
+      email: 'anyEmail@mail.com',
+      password: 'anyPassword',
+    });
+    expect(accessToken).toEqual(null);
+  });
 });
