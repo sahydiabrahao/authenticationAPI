@@ -15,10 +15,12 @@ export class AuthenticateAccountFromDatabase implements AuthenticateAccountModel
   ) {}
   async auth(authenticateAccount: AuthenticateAccountInput): Promise<AuthenticateAccountOutput> {
     const databaseAccount = await this.loadAccountByEmail.load(authenticateAccount.email);
-    if (databaseAccount) {
-      await this.hashComparer.compare(authenticateAccount.password, databaseAccount.password);
-      await this.tokenGenerator.generate(databaseAccount.id);
-    }
-    return null;
+    if (!databaseAccount) return null;
+    const isValid = await this.hashComparer.compare(
+      authenticateAccount.password,
+      databaseAccount.password
+    );
+    if (!isValid) return null;
+    return await this.tokenGenerator.generate(databaseAccount.id);
   }
 }

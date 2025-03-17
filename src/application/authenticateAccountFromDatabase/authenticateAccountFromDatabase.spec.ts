@@ -133,4 +133,12 @@ describe('AuthenticateAccountFromDatabase', () => {
     });
     expect(promise).rejects.toThrow();
   });
+  test('Should return access token when valid account are provided', async () => {
+    const { sut } = makeSut();
+    const accessToken = await sut.auth({
+      email: 'anyEmail@mail.com',
+      password: 'anyPassword',
+    });
+    expect(accessToken).toEqual('anyToken');
+  });
 });
