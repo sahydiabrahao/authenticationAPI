@@ -124,4 +124,13 @@ describe('AuthenticateAccountFromDatabase', () => {
     });
     expect(generateSpy).toHaveBeenCalledWith('anyId');
   });
+  test('Should throws if TokenGenerator throw an error', async () => {
+    const { sut, tokenGeneratorStub } = makeSut();
+    jest.spyOn(tokenGeneratorStub, 'generate').mockReturnValueOnce(Promise.reject(new Error()));
+    const promise = sut.auth({
+      email: 'anyEmail@mail.com',
+      password: 'anyPassword',
+    });
+    expect(promise).rejects.toThrow();
+  });
 });
