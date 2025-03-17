@@ -74,7 +74,7 @@ describe('AuthenticateAccountFromDatabase', () => {
     });
     expect(accessToken).toEqual(null);
   });
-  test('Should call HashedComparer with correct vaues', async () => {
+  test('Should call HashedComparer with correct values', async () => {
     const { sut, hashComparerStub } = makeSut();
     const compareSpy = jest.spyOn(hashComparerStub, 'compare');
     await sut.auth({
@@ -85,5 +85,14 @@ describe('AuthenticateAccountFromDatabase', () => {
       value: 'anyPassword',
       hash: 'hashedPassword',
     });
+  });
+  test('Should throws if HashedComparer throw an error', async () => {
+    const { sut, hashComparerStub } = makeSut();
+    jest.spyOn(hashComparerStub, 'compare').mockReturnValueOnce(Promise.reject(new Error()));
+    const promise = sut.auth({
+      email: 'anyEmail@mail.com',
+      password: 'anyPassword',
+    });
+    expect(promise).rejects.toThrow();
   });
 });
