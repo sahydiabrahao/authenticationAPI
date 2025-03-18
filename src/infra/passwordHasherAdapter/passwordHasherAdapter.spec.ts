@@ -48,4 +48,9 @@ describe('PasswordHasherAdapter', () => {
     await sut.compare('anyPassword', 'anyHash');
     expect(compareSpy).toHaveBeenCalledWith('anyPassword', 'anyHash');
   });
+  test('Should return true when Bcrypt compare method success', async () => {
+    const { sut } = makeSut();
+    const isValid = await sut.compare('anyPassword', 'anyHash');
+    expect(isValid).toEqual(true);
+  });
 });
