@@ -9,6 +9,8 @@ export class PasswordHasherAdapter implements PasswordHasherModel, HashComparerM
   }
 
   async compare(value: string, hash: string): Promise<boolean> {
-    return await bcrypt.compare(value, hash);
+    const isValid = bcrypt.compare(value, hash);
+    if (!isValid) return false;
+    return isValid;
   }
 }

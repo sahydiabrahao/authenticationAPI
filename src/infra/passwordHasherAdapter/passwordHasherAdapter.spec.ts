@@ -53,4 +53,12 @@ describe('PasswordHasherAdapter', () => {
     const isValid = await sut.compare('anyPassword', 'anyHash');
     expect(isValid).toEqual(true);
   });
+  test('Should return false when Bcrypt compare method fails', async () => {
+    const { sut } = makeSut();
+    jest.spyOn(bcrypt, 'compare').mockImplementationOnce(() => {
+      Promise.resolve(false);
+    });
+    const isValid = await sut.compare('anyPassword', 'anyHash');
+    expect(isValid).toEqual(false);
+  });
 });
