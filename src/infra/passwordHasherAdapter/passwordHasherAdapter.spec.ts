@@ -15,12 +15,15 @@ const makeSut = (): SutTypes => {
 
 jest.mock('bcrypt', () => ({
   async hash(): Promise<string> {
-    return 'hashedPassword';
+    return Promise.resolve('hashedPassword');
+  },
+  async compare(): Promise<boolean> {
+    return Promise.resolve(true);
   },
 }));
 
 describe('PasswordHasherAdapter', () => {
-  test('Should call Bcrypt with correct password', async () => {
+  test('Should call Bcrypt hash method with correct password', async () => {
     const { sut } = makeSut();
     const hashSpy = jest.spyOn(bcrypt, 'hash');
     await sut.hash('anyPassword');
@@ -38,5 +41,11 @@ describe('PasswordHasherAdapter', () => {
     });
     const promise = sut.hash('anyPassword');
     await expect(promise).rejects.toThrow();
+  });
+  test('Should call Bcrypt compare method with correct password', async () => {
+    const { sut } = makeSut();
+    const compareSpy = jest.spyOn(bcrypt, 'compare');
+    await sut.compare('anyPassword', 'anyHash');
+    expect(compareSpy).toHaveBeenCalledWith('anyPassword', 'anyHash');
   });
 });
