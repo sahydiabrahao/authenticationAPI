@@ -163,4 +163,13 @@ describe('AuthenticateAccountFromDatabase', () => {
     });
     expect(updateSpy).toHaveBeenCalledWith('anyId', 'anyToken');
   });
+  test('Should throws if UpdateAccessToken throw an error', async () => {
+    const { sut, updateAccessTokenStub } = makeSut();
+    jest.spyOn(updateAccessTokenStub, 'update').mockReturnValueOnce(Promise.reject(new Error()));
+    const promise = sut.auth({
+      email: 'anyEmail@mail.com',
+      password: 'anyPassword',
+    });
+    expect(promise).rejects.toThrow();
+  });
 });
