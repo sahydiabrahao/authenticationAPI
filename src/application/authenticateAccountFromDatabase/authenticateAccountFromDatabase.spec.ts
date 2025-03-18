@@ -4,8 +4,17 @@ import {
   LoadAccountByEmailModel,
   LoadAccountByEmailOutput,
   TokenGeneratorModel,
+  UpdateAccessTokenModel,
 } from '@application';
 
+const makeUpdateAccessTokenStub = (): UpdateAccessTokenModel => {
+  class UpdateAccessTokenStub implements UpdateAccessTokenModel {
+    async update(id: string, token: string): Promise<void> {
+      return Promise.resolve();
+    }
+  }
+  return new UpdateAccessTokenStub();
+};
 const makeTokenGeneratorStub = (): TokenGeneratorModel => {
   class TokenGeneratorStub implements TokenGeneratorModel {
     async generate(id: string): Promise<string> {
@@ -41,22 +50,26 @@ type SutTypes = {
   loadAccountByEmailStub: LoadAccountByEmailModel;
   hashComparerStub: HashComparerModel;
   tokenGeneratorStub: TokenGeneratorModel;
+  updateAccessTokenStub: UpdateAccessTokenModel;
 };
 
 const makeSut = (): SutTypes => {
+  const updateAccessTokenStub = makeUpdateAccessTokenStub();
   const tokenGeneratorStub = makeTokenGeneratorStub();
   const hashComparerStub = makeHashComparerStub();
   const loadAccountByEmailStub = makeLoadAccountByEmailStub();
   const sut = new AuthenticateAccountFromDatabase(
     loadAccountByEmailStub,
     hashComparerStub,
-    tokenGeneratorStub
+    tokenGeneratorStub,
+    updateAccessTokenStub
   );
   return {
     sut,
     loadAccountByEmailStub,
     hashComparerStub,
     tokenGeneratorStub,
+    updateAccessTokenStub,
   };
 };
 
@@ -140,5 +153,14 @@ describe('AuthenticateAccountFromDatabase', () => {
       password: 'anyPassword',
     });
     expect(accessToken).toEqual('anyToken');
+  });
+  test('Should call UpdateAccessToken with correct values', async () => {
+    const { sut, updateAccessTokenStub } = makeSut();
+    const updateSpy = jest.spyOn(updateAccessTokenStub, 'update');
+    await sut.auth({
+      email: 'anyEmail@mail.com',
+      password: 'anyPassword',
+    });
+    expect(updateSpy).toHaveBeenCalledWith('anyId', 'anyToken');
   });
 });
