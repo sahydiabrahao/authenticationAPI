@@ -34,7 +34,7 @@ describe('PasswordHasherAdapter', () => {
     const hashedPassword = await sut.hash('anyPassword');
     expect(hashedPassword).toEqual('hashedPassword');
   });
-  test('Should throw an error  when Bcrypt hash throws an error', async () => {
+  test('Should throw an error when Bcrypt hash throws an error', async () => {
     const { sut } = makeSut();
     jest.spyOn(bcrypt, 'hash').mockImplementationOnce(() => {
       throw new Error();
