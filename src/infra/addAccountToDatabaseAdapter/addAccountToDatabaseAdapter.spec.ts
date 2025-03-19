@@ -21,7 +21,7 @@ describe('AddAccountToDatabaseAdapter', () => {
   beforeEach(async () => {
     await MongoHelper.clearAllCollection();
   });
-  test('Should return account if valid data is provided', async () => {
+  test('Should return account on add method success', async () => {
     const { sut } = makeSut();
     const account = {
       email: 'anyEmail@mail.com',
@@ -32,5 +32,21 @@ describe('AddAccountToDatabaseAdapter', () => {
     expect(newAccount.id).toBeTruthy();
     expect(newAccount.email).toBe(account.email);
     expect(newAccount.password).toBe(account.password);
+  });
+  test('Should return account on loadByEmail method success', async () => {
+    const { sut } = makeSut();
+    const account = {
+      email: 'anyEmail@mail.com',
+      password: 'anyPassword',
+    };
+    const accountCollection = await MongoHelper.getCollections('accounts');
+    await accountCollection.insertOne(account);
+    const accountInDatabase = await sut.loadByEmail('anyEmail@mail.com');
+    expect(accountInDatabase).not.toBeNull();
+  });
+  test('Should return null if loadByEmail fails', async () => {
+    const { sut } = makeSut();
+    const accountInDatabase = await sut.loadByEmail('anyEmail@mail.com');
+    expect(accountInDatabase).toBeNull();
   });
 });

@@ -3,7 +3,6 @@ export type LoadAccountByEmailOutput = {
   email: string;
   password: string;
 } | null;
-
 export interface LoadAccountByEmailModel {
   loadByEmail(email: string): Promise<LoadAccountByEmailOutput>;
 }
