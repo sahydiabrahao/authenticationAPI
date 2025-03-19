@@ -1,8 +1,9 @@
 import { MongoHelper } from './mongoHelper';
+import { env } from '../../main/config/env';
 
 describe('MongoHelper', () => {
   beforeAll(async () => {
-    await MongoHelper.connect(process.env.MONGO_URL);
+    await MongoHelper.connect(env.mongoURL);
   });
 
   afterAll(async () => {

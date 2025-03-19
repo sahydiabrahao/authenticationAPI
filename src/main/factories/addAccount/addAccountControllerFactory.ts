@@ -5,9 +5,7 @@ import {
   AddAccountToDatabaseAdapter,
 } from '@infra';
 import { AddAccountController, ControllerModel } from '@presentation';
-import { EmailValidatorAdapter } from '@utils';
-import { LogControllerDecorator } from '../../decorators/logControllerDecorator';
-import { AddAccountValidatorFactory } from './addAccountValidatorFactory';
+import { AddAccountValidatorFactory, LogControllerDecorator } from '@main';
 
 export const addAccountControllerFactory = (): ControllerModel => {
   const SALT = 12;

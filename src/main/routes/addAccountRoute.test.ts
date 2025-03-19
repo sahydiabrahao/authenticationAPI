@@ -2,7 +2,7 @@ import request from 'supertest';
 import app from '../config/app';
 import { MongoHelper } from '@infra';
 
-describe('AddAccout Routes', () => {
+describe('AddAccountRoute', () => {
   beforeAll(async () => {
     await MongoHelper.connect(process.env.MONGO_URL);
   });
@@ -14,11 +14,11 @@ describe('AddAccout Routes', () => {
   beforeEach(async () => {
     await MongoHelper.clearAllCollection();
   });
-  test('Should return account on success', async () => {
+  test('Should return 200 on success', async () => {
     await request(app)
       .post('/api/addAccount')
       .send({
-        email: 'anyEamil@mail.com',
+        email: 'anyEmail@mail.com',
         password: 'anyPassword',
         passwordConfirmation: 'anyPassword',
       })

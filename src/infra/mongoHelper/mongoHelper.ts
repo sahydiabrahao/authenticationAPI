@@ -1,9 +1,9 @@
 import { Collection, MongoClient } from 'mongodb';
+import { env } from '../../main/config/env';
 
 export const MongoHelper = {
   mongoDbConnection: null as MongoClient | null,
-  //TODO:remove 'mongodb://127.0.0.1:27017/authenticationAPI'
-  url: process.env.MONGO_URL || 'mongodb://127.0.0.1:27017/authenticationAPI',
+  url: env.mongoURL,
 
   async connect(url: string) {
     url = this.url;

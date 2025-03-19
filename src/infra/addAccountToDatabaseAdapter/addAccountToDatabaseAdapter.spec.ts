@@ -1,4 +1,5 @@
 import { AddAccountToDatabaseAdapter, MongoHelper } from '@infra';
+import { env } from '../../main/config/env';
 
 type SutTypes = {
   sut: AddAccountToDatabaseAdapter;
@@ -11,7 +12,7 @@ const makeSut = (): SutTypes => {
 
 describe('AddAccountToDatabaseAdapter', () => {
   beforeAll(async () => {
-    await MongoHelper.connect(process.env.MONGO_URL);
+    await MongoHelper.connect(env.mongoURL);
   });
 
   afterAll(async () => {

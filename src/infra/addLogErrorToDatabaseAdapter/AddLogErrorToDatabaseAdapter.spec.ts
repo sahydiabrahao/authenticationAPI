@@ -1,6 +1,6 @@
 import { AddLogErrorToDatabaseAdapter, MongoHelper } from '@infra';
 import { Collection } from 'mongodb';
-
+import { env } from '../../main/config/env';
 type SutTypes = {
   sut: AddLogErrorToDatabaseAdapter;
 };
@@ -14,7 +14,7 @@ describe('AddLogErroToDatabaseAdapter', () => {
   let errorCollection: Collection;
 
   beforeAll(async () => {
-    await MongoHelper.connect(process.env.MONGO_URL);
+    await MongoHelper.connect(env.mongoURL);
   });
 
   afterAll(async () => {
