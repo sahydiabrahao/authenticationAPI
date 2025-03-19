@@ -3,10 +3,12 @@ import {
   AuthenticateAccountModel,
   AuthenticateAccountOutput,
 } from '@domain';
-import { LoadAccountByEmailModel } from './protocols/loadAccountByEmailModel';
-import { HashComparerModel } from './protocols/hashComparerModel';
-import { TokenGeneratorModel } from './protocols/tokenGeneratorModel';
-import { UpdateAccessTokenModel } from '@application';
+import {
+  LoadAccountByEmailModel,
+  HashComparerModel,
+  TokenGeneratorModel,
+  UpdateAccessTokenModel,
+} from '@application';
 
 export class AuthenticateAccountFromDatabase implements AuthenticateAccountModel {
   constructor(
