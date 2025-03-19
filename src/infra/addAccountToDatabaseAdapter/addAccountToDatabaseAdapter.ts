@@ -2,12 +2,14 @@ import {
   AddAccountToDatabaseModel,
   LoadAccountByEmailModel,
   LoadAccountByEmailOutput,
+  UpdateAccessTokenModel,
 } from '@application';
 import { AddAccountInput, AddAccountOutput } from '@domain';
 import { MongoHelper } from '../mongoHelper/mongoHelper';
+import { ObjectId } from 'mongodb';
 
 export class AddAccountToDatabaseAdapter
-  implements AddAccountToDatabaseModel, LoadAccountByEmailModel
+  implements AddAccountToDatabaseModel, LoadAccountByEmailModel, UpdateAccessTokenModel
 {
   async add(account: AddAccountInput): Promise<AddAccountOutput> {
     const accountCollection = await MongoHelper.getCollections('accounts');
@@ -25,5 +27,9 @@ export class AddAccountToDatabaseAdapter
       id: accountInDatabase?._id.toString(),
     };
     return account;
+  }
+  async updateAccessToken(id: string, token: string): Promise<void> {
+    const accountCollection = await MongoHelper.getCollections('accounts');
+    await accountCollection.updateOne({ _id: new ObjectId(id) }, { $set: { accessToken: token } });
   }
 }

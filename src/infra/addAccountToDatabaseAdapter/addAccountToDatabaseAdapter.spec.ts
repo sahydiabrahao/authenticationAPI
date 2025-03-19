@@ -49,4 +49,16 @@ describe('AddAccountToDatabaseAdapter', () => {
     const accountInDatabase = await sut.loadByEmail('anyEmail@mail.com');
     expect(accountInDatabase).toBeNull();
   });
+  test('Should update access token account on updateAccessToken method success', async () => {
+    const { sut } = makeSut();
+    const accountInput = {
+      email: 'anyEmail@mail.com',
+      password: 'anyPassword',
+    };
+    const accountCollection = await MongoHelper.getCollections('accounts');
+    const { insertedId } = await accountCollection.insertOne(accountInput);
+    await sut.updateAccessToken(insertedId.toString(), 'anyAccessToken');
+    const account = await accountCollection.findOne(insertedId);
+    if (account) expect(account.accessToken).toEqual('anyAccessToken');
+  });
 });
