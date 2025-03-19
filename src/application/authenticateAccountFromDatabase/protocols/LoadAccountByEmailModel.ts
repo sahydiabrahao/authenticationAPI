@@ -5,5 +5,5 @@ export type LoadAccountByEmailOutput = {
 } | null;
 
 export interface LoadAccountByEmailModel {
-  load(email: string): Promise<LoadAccountByEmailOutput>;
+  loadByEmail(email: string): Promise<LoadAccountByEmailOutput>;
 }

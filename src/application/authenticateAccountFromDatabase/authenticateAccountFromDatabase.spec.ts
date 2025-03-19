@@ -9,7 +9,7 @@ import {
 
 const makeUpdateAccessTokenStub = (): UpdateAccessTokenModel => {
   class UpdateAccessTokenStub implements UpdateAccessTokenModel {
-    async update(id: string, token: string): Promise<void> {
+    async updateAccessToken(id: string, token: string): Promise<void> {
       return Promise.resolve();
     }
   }
@@ -34,7 +34,7 @@ const makeHashComparerStub = (): HashComparerModel => {
 
 const makeLoadAccountByEmailStub = (): LoadAccountByEmailModel => {
   class LoadAccountByEmailStub implements LoadAccountByEmailModel {
-    async load(email: string): Promise<LoadAccountByEmailOutput> {
+    async loadByEmail(email: string): Promise<LoadAccountByEmailOutput> {
       return Promise.resolve({
         id: 'anyId',
         email: 'anyEmail@mail.com',
@@ -76,7 +76,7 @@ const makeSut = (): SutTypes => {
 describe('AuthenticateAccountFromDatabase', () => {
   test('Should call LoadAccountByEmail with correct email', async () => {
     const { sut, loadAccountByEmailStub } = makeSut();
-    const loadSpy = jest.spyOn(loadAccountByEmailStub, 'load');
+    const loadSpy = jest.spyOn(loadAccountByEmailStub, 'loadByEmail');
     await sut.auth({
       email: 'anyEmail@mail.com',
       password: 'anyPassword',
@@ -85,7 +85,9 @@ describe('AuthenticateAccountFromDatabase', () => {
   });
   test('Should throws if LoadAccountByEmail throw an error', async () => {
     const { sut, loadAccountByEmailStub } = makeSut();
-    jest.spyOn(loadAccountByEmailStub, 'load').mockReturnValueOnce(Promise.reject(new Error()));
+    jest
+      .spyOn(loadAccountByEmailStub, 'loadByEmail')
+      .mockReturnValueOnce(Promise.reject(new Error()));
     const promise = sut.auth({
       email: 'anyEmail@mail.com',
       password: 'anyPassword',
@@ -94,7 +96,7 @@ describe('AuthenticateAccountFromDatabase', () => {
   });
   test('Should return null if LoadAccountByEmail returns null', async () => {
     const { sut, loadAccountByEmailStub } = makeSut();
-    jest.spyOn(loadAccountByEmailStub, 'load').mockReturnValueOnce(Promise.resolve(null));
+    jest.spyOn(loadAccountByEmailStub, 'loadByEmail').mockReturnValueOnce(Promise.resolve(null));
     const accessToken = await sut.auth({
       email: 'anyEmail@mail.com',
       password: 'anyPassword',
@@ -156,7 +158,7 @@ describe('AuthenticateAccountFromDatabase', () => {
   });
   test('Should call UpdateAccessToken with correct values', async () => {
     const { sut, updateAccessTokenStub } = makeSut();
-    const updateSpy = jest.spyOn(updateAccessTokenStub, 'update');
+    const updateSpy = jest.spyOn(updateAccessTokenStub, 'updateAccessToken');
     await sut.auth({
       email: 'anyEmail@mail.com',
       password: 'anyPassword',
@@ -165,7 +167,9 @@ describe('AuthenticateAccountFromDatabase', () => {
   });
   test('Should throws if UpdateAccessToken throw an error', async () => {
     const { sut, updateAccessTokenStub } = makeSut();
-    jest.spyOn(updateAccessTokenStub, 'update').mockReturnValueOnce(Promise.reject(new Error()));
+    jest
+      .spyOn(updateAccessTokenStub, 'updateAccessToken')
+      .mockReturnValueOnce(Promise.reject(new Error()));
     const promise = sut.auth({
       email: 'anyEmail@mail.com',
       password: 'anyPassword',
