@@ -1,2 +1,2 @@
-export * from './emailValidatorAdapter/emailValidatorAdapter';
-export * from './emailValidatorAdapter/protocols/emailValidatorModel';
+export * from './validatorAdapter/validatorAdapter';
+export * from './validatorAdapter/protocols/emailValidatorModel';
