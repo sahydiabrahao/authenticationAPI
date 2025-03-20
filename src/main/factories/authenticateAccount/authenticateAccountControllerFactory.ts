@@ -1,5 +1,5 @@
 import { AuthenticateAccountFromDatabase } from '@application';
-import { AddLogErrorToDatabaseAdapter, BcryptAdapter, MongoDbAdapter, JwtAdapter } from '@infra';
+import { LogErrorMongoDbAdapter, BcryptAdapter, MongoDbAdapter, JwtAdapter } from '@infra';
 import { AuthenticateAccountController, ControllerModel } from '@presentation';
 import { AuthenticateAccountValidatorFactory, LogControllerDecorator, env } from '@main';
 
@@ -18,6 +18,6 @@ export const AuthenticateAccountControllerFactory = (): ControllerModel => {
     authenticateAccountFromDatabase,
     AuthenticateAccountValidatorFactory()
   );
-  const addLogErrorToDatabaseAdapter = new AddLogErrorToDatabaseAdapter();
+  const addLogErrorToDatabaseAdapter = new LogErrorMongoDbAdapter();
   return new LogControllerDecorator(authenticateAccountController, addLogErrorToDatabaseAdapter);
 };

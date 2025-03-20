@@ -1,16 +1,16 @@
-import { AddLogErrorToDatabaseAdapter, MongoHelper } from '@infra';
+import { LogErrorMongoDbAdapter, MongoHelper } from '@infra';
 import { Collection } from 'mongodb';
 import { env } from '../../main/config/env';
 type SutTypes = {
-  sut: AddLogErrorToDatabaseAdapter;
+  sut: LogErrorMongoDbAdapter;
 };
 
 const makeSut = (): SutTypes => {
-  const sut = new AddLogErrorToDatabaseAdapter();
+  const sut = new LogErrorMongoDbAdapter();
   return { sut };
 };
 
-describe('AddLogErroToDatabaseAdapter', () => {
+describe('LogErrorMongoDbAdapter', () => {
   let errorCollection: Collection;
 
   beforeAll(async () => {

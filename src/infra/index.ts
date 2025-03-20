@@ -1,5 +1,5 @@
 export * from './bcryptAdapter/bcryptAdapter';
 export * from './mongoHelper/mongoHelper';
 export * from './mongoDbAdapter/mongoDbAdapter';
-export * from './addLogErrorToDatabaseAdapter/addLogErroToDatabaseAdapter';
+export * from './logErrorMongoDbAdapter/logErrorMongoDbAdapter';
 export * from './jwtAdapter/jwtAdapter';
