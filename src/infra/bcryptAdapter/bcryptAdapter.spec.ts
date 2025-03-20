@@ -1,13 +1,13 @@
 import bcrypt from 'bcrypt';
-import { PasswordHasherAdapter } from '@infra';
+import { BcryptAdapter } from '@infra';
 
 type SutTypes = {
-  sut: PasswordHasherAdapter;
+  sut: BcryptAdapter;
 };
 
 const SALT = 12;
 const makeSut = (): SutTypes => {
-  const sut = new PasswordHasherAdapter(SALT);
+  const sut = new BcryptAdapter(SALT);
   return {
     sut,
   };
@@ -22,7 +22,7 @@ jest.mock('bcrypt', () => ({
   },
 }));
 
-describe('PasswordHasherAdapter', () => {
+describe('BcryptAdapter', () => {
   test('Should call Bcrypt hash method with correct password', async () => {
     const { sut } = makeSut();
     const hashSpy = jest.spyOn(bcrypt, 'hash');

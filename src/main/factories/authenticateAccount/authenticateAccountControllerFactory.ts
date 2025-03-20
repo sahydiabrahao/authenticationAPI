@@ -1,10 +1,5 @@
 import { AuthenticateAccountFromDatabase } from '@application';
-import {
-  AddLogErrorToDatabaseAdapter,
-  PasswordHasherAdapter,
-  MongoDbAdapter,
-  JwtAdapter,
-} from '@infra';
+import { AddLogErrorToDatabaseAdapter, BcryptAdapter, MongoDbAdapter, JwtAdapter } from '@infra';
 import { AuthenticateAccountController, ControllerModel } from '@presentation';
 import { AuthenticateAccountValidatorFactory, LogControllerDecorator, env } from '@main';
 
@@ -12,7 +7,7 @@ export const AuthenticateAccountControllerFactory = (): ControllerModel => {
   const SALT = 12;
   const jwtAdapter = new JwtAdapter(env.jwtSecret);
   const addAccountToDatabaseAdapter = new MongoDbAdapter();
-  const passwordHasherAdapter = new PasswordHasherAdapter(SALT);
+  const passwordHasherAdapter = new BcryptAdapter(SALT);
   const authenticateAccountFromDatabase = new AuthenticateAccountFromDatabase(
     addAccountToDatabaseAdapter,
     passwordHasherAdapter,

@@ -5,7 +5,7 @@ import {
   UpdateAccessTokenModel,
 } from '@application';
 import { AddAccountInput, AddAccountOutput } from '@domain';
-import { MongoHelper } from '../mongoHelper/mongoHelper';
+import { MongoHelper } from '@infra';
 import { ObjectId } from 'mongodb';
 
 export class MongoDbAdapter

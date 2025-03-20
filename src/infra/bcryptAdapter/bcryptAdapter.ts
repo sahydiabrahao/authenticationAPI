@@ -1,7 +1,7 @@
 import { HashComparerModel, PasswordHasherModel } from '@application';
 import bcrypt from 'bcrypt';
 
-export class PasswordHasherAdapter implements PasswordHasherModel, HashComparerModel {
+export class BcryptAdapter implements PasswordHasherModel, HashComparerModel {
   constructor(private readonly salt: number) {}
 
   async hash(password: string): Promise<string> {
