@@ -2,7 +2,7 @@ import { AuthenticateAccountFromDatabase } from '@application';
 import {
   AddLogErrorToDatabaseAdapter,
   PasswordHasherAdapter,
-  AddAccountToDatabaseAdapter,
+  MongoDbAdapter,
   JwtAdapter,
 } from '@infra';
 import { AuthenticateAccountController, ControllerModel } from '@presentation';
@@ -11,7 +11,7 @@ import { AuthenticateAccountValidatorFactory, LogControllerDecorator, env } from
 export const AuthenticateAccountControllerFactory = (): ControllerModel => {
   const SALT = 12;
   const jwtAdapter = new JwtAdapter(env.jwtSecret);
-  const addAccountToDatabaseAdapter = new AddAccountToDatabaseAdapter();
+  const addAccountToDatabaseAdapter = new MongoDbAdapter();
   const passwordHasherAdapter = new PasswordHasherAdapter(SALT);
   const authenticateAccountFromDatabase = new AuthenticateAccountFromDatabase(
     addAccountToDatabaseAdapter,

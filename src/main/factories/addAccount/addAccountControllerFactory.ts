@@ -1,15 +1,11 @@
 import { AddAccountToDatabase } from '@application';
-import {
-  AddLogErrorToDatabaseAdapter,
-  PasswordHasherAdapter,
-  AddAccountToDatabaseAdapter,
-} from '@infra';
+import { AddLogErrorToDatabaseAdapter, PasswordHasherAdapter, MongoDbAdapter } from '@infra';
 import { AddAccountController, ControllerModel } from '@presentation';
 import { AddAccountValidatorFactory, LogControllerDecorator } from '@main';
 
 export const addAccountControllerFactory = (): ControllerModel => {
   const SALT = 12;
-  const addAccountToDatabaseAdapter = new AddAccountToDatabaseAdapter();
+  const addAccountToDatabaseAdapter = new MongoDbAdapter();
   const passwordHasherAdapter = new PasswordHasherAdapter(SALT);
   const addAccountToDatabase = new AddAccountToDatabase(
     passwordHasherAdapter,

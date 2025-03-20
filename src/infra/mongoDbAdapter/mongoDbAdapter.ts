@@ -8,7 +8,7 @@ import { AddAccountInput, AddAccountOutput } from '@domain';
 import { MongoHelper } from '../mongoHelper/mongoHelper';
 import { ObjectId } from 'mongodb';
 
-export class AddAccountToDatabaseAdapter
+export class MongoDbAdapter
   implements AddAccountToDatabaseModel, LoadAccountByEmailModel, UpdateAccessTokenModel
 {
   async add(account: AddAccountInput): Promise<AddAccountOutput> {

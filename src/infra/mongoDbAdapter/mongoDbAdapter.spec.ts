@@ -1,16 +1,16 @@
-import { AddAccountToDatabaseAdapter, MongoHelper } from '@infra';
+import { MongoDbAdapter, MongoHelper } from '@infra';
 import { env } from '../../main/config/env';
 
 type SutTypes = {
-  sut: AddAccountToDatabaseAdapter;
+  sut: MongoDbAdapter;
 };
 
 const makeSut = (): SutTypes => {
-  const sut = new AddAccountToDatabaseAdapter();
+  const sut = new MongoDbAdapter();
   return { sut };
 };
 
-describe('AddAccountToDatabaseAdapter', () => {
+describe('MongoDbAdapter', () => {
   beforeAll(async () => {
     await MongoHelper.connect(env.mongoURL);
   });
