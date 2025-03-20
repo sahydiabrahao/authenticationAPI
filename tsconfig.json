@@ -15,6 +15,7 @@
       "@application": ["src/application"],
       "@infra": ["src/infra"]
     },
+
     "esModuleInterop": true,
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
@@ -23,8 +24,9 @@
     "resolveJsonModule": true,
     "isolatedModules": true
   },
+  "ts-node": {
+    "require": ["tsconfig-paths/register"]
+  },
   "include": ["src/**/*", "env.d.ts", "src/main/config/env.ts"],
-
-  "exclude": ["node_modules", "dist"]
-  // "exclude": ["node_modules", "dist", "**/*.test.ts", "**/*.spec.ts"]
+  "exclude": ["node_modules", "dist", "**/*.test.ts", "**/*.spec.ts"]
 }
